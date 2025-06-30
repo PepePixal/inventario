@@ -1,3 +1,3 @@
 <?php
 
-print "Bienvenido al sistema de inventarios";
+print "Bienvenido loginCaratulaVista.php";

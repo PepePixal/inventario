@@ -4,7 +4,7 @@
  */
 class Control
 {
-    private $controlador = "Login";
+    private $controlador = "LoginControlador";
     private $metodo = "caratula";
     private $parametros = [];
 
@@ -26,7 +26,7 @@ class Control
             unset($url[0]);
         }
 
-        //Carga el controlador y su clase correspondiente
+        //Carga el controlador recibido en la url
         require_once("../app/controladores/" . ucwords($this->controlador) . ".php");
         //Crea la instancia de la clase del controlador y la reasigna a $this->controlador como objeto
         $this->controlador = new $this->controlador;
@@ -49,12 +49,9 @@ class Control
         //de lo contrario : le asigna un arreglo vacio []
         $this->parametros = $url ? array_values($url) : [];
         
-        //** Ejecutar el método resultante */
+        //** Ejecutar el método del controlador, recibidos en la url */
         //requiere la función, en un arreglo donde se indica el [archivo y el método] y 
         //los parámetros si los hay
-
-        //debuguear($this->parametros);
-
         call_user_func_array([$this->controlador, $this->metodo], $this->parametros );
 
     }
