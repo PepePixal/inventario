@@ -32,4 +32,29 @@ class Controlador
         }
     }
 
+    //recibe parámetros y muestra mensaje
+    public function mensaje($titulo='', $subtitulo, $texto, $url, $color, $url2="", $color2="", $texto2="")
+    {
+        //define arreglo con datos 
+        $datos = [
+            "titulo" => $titulo,
+            "menu" => true,
+            "errores" => [],
+            "data" => [],
+            "subtitulo" => $subtitulo,
+            "texto" => $texto,
+            "url" => $url,
+            "color" => "alert-".$color,
+            "colorBoton" => "btn-".$color,
+            "textoBoton" => "<- Volver",
+            "url2" => $url2,
+            "colorBoton2" => "btn-".$color2,
+            "textoBoton2" => $texto2,
+        ];
+
+        //llama metodo vista enviando nom archivo y datos
+        $this->vista("mensaje", $datos);
+        exit;
+    }
+
 }

@@ -1,5 +1,13 @@
 <?php
 
+//Constante para que no se corrompa la ruta url
+define('RUTA', "/inventario/");
+//Constantes para Tipos de Movimientos
+define('ADMON',1);
+define('VENDEDOR',2);
+define('CLIENTE',1);
+define('PROVEEDOR',1);
+
 //incluye, una sola vez, la class libs/Helper.php
 require_once("libs/Helper.php");
 //incluye, una sola vez, la class libs/Control.php
