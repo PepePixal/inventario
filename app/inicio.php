@@ -2,6 +2,14 @@
 
 //Constante para que no se corrompa la ruta url
 define('RUTA', "/inventario/");
+
+//llaves para encriptación
+define("LLAVE1", "Hombresneciosque");
+define("LLAVE2", "acusaisalamujer");
+
+//clave para encriptar el password
+define("CLAVE", "arrierossomos");
+
 //Constantes para Tipos de Movimientos
 define('ADMON',1);
 define('VENDEDOR',2);

@@ -13,7 +13,8 @@ class Control
         //llama al método de la própia class Control ($this),
         //que divide la url por (/), retorna un arreglo index con las partes y lo asigna a $url
         $url = $this->separarURL();   
-            
+
+        
         //comprueba si la url no es un arreglo vacio y si dentro de ../app/controladores/ ,
         //existe un archivo con el nombre igual al valor del primer elemento [0] del arreglo $url + .php
         //(ucwords() pone en mayúscula la primera letra del valor del elemento [0] de $url)
@@ -65,6 +66,7 @@ class Control
         //**Limpiar y Sanitizar la url que viene por GET */
         //si la llave 'url' de la superglobal $_GET
         if(isset($_GET['url'])) {
+
             //elimina / del final de la url y la reasigna
             $url = rtrim($_GET['url'], "/");
             //elimina \ del final de la url y la reasigna

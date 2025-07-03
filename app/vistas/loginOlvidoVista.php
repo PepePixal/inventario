@@ -1,5 +1,5 @@
 <?php include_once("encabezado.php"); ?>
-    <form action="<?php print RUTA; ?>login/olvidoVerificar" method="post">
+    <form action="<?php print RUTA; ?>LoginControlador/olvidoVerificar" method="post">
         <div class="form-group text-start">
             <label for="usuario">* Correo:</label>
             <input id="usuario" name="usuario" type="email" class="form-control" placeholder="Escribe tu email de usuario" required>

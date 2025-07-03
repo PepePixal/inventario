@@ -11,8 +11,8 @@
         <div class="form-group text-start mt-2">
             <input type="submit" value="Enviar" class="btn btn-success">
         </div>
-        <!-- enlace a controlador login / método lolvidoVerificar -->
-        <a href="<?php print RUTA; ?>login/olvidoVerificar">¿Olvidaste tu clave de acceso?</a><br>   
+        <!-- enlace a controlador login / método olvidoVerificar -->
+        <a href="<?php print RUTA; ?>LoginControlador/olvidoVerificar">¿Olvidaste tu clave de acceso?</a><br>   
     </form>
 <?php include_once("piepagina.php"); ?>
            
