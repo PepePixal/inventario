@@ -11,14 +11,14 @@ class Control
     function __construct()
     {
         //llama al método de la própia class Control ($this),
-        //que divide la url por (/), retorna un arreglo index con las partes y lo asigna a $url
+        //que divide la url por (/), retorna un arreglo indexado con las partes y lo asigna a $url
         $url = $this->separarURL();   
 
-        
         //comprueba si la url no es un arreglo vacio y si dentro de ../app/controladores/ ,
         //existe un archivo con el nombre igual al valor del primer elemento [0] del arreglo $url + .php
         //(ucwords() pone en mayúscula la primera letra del valor del elemento [0] de $url)
         if ($url !=[] && file_exists("../app/controladores/" . ucwords($url[0]) . ".php")) {
+
             //** Controlador */
             //Obtiene el archivo controlador .php, de la $url/
             //asigna a controlador, el primer valor [0] del arreglo $url (obtenido de $_GET['url'])

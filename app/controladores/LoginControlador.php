@@ -1,5 +1,4 @@
 <?php
-/** */
 
 class LoginControlador extends Controlador
 {
@@ -13,17 +12,19 @@ class LoginControlador extends Controlador
         $this->modelo = $this->modelo("LoginModelo");
     }
 
+    //muestra la vista Inicial para loguearse 
     public function caratula()  {
         //define arreglos con datos a enviar a la vista
         $datos = [
             "titulo" => "Entrada",
-            "subtitulo" => "Sistema de inventario"
+            "subtitulo" => "Entrada al Sistema de inventario"
         ];
 
         //llama al método vista enviando el nombre de la vista y datos
         $this->vista("loginCaratulaVista", $datos);
     }
 
+    //proceso de verificación de email y cambio de password
     public function olvidoVerificar() {
 
         //var para los errores de validación
@@ -91,7 +92,8 @@ class LoginControlador extends Controlador
         $this->vista("loginOlvidoVista", $datos);
     }
 
-    //Método envia correo y retorna true o false :bool
+
+    //Método envia correo con enlace para cambio de password y retorna true o false :bool
     public function enviarCorreo(string $email='')
     {
         $data = [];
@@ -126,6 +128,8 @@ class LoginControlador extends Controlador
         }
     }
     
+    //desencripta y verifica la url de origen, verifica la nueva password y 
+    //actualiza la password en la DB
     public function cambiarClave($id="")
     {
         //obtiene el $id original, tras desencriptarlo
@@ -211,5 +215,74 @@ class LoginControlador extends Controlador
         //llama método vista enviando archivo y datos
         $this->vista("loginCambiarVista", $datos);
     }
+
+    //verifica el usuario (email) y password, para loguearse
+    public function verificar()
+    {
+        //define array errores de validación
+        $errores = [];
+
+        //si el método HTTP del server, para acceder a la página, ha sido POST
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $id = $_POST["id"] ?? "";
+            $usuario = $_POST["usuario"] ?? "";
+            $clave = $_POST["clave"] ?? "";
+
+            //validaciones de los datos del form, recibido en POST
+            if (empty($usuario)) {
+                array_push($errores, "El Usuario (email) es obligatorio");
+            }
+            //valida si el filtrado del formato del email NO es correcto
+            if (filter_var($usuario, FILTER_VALIDATE_EMAIL) == false) {
+                //agrega error al arreglo $errores
+                array_push($errores, "El formato del correo No es válido");
+            }
+            if (empty($clave)) {
+                array_push($errores, "La Contraseña es obligatoria");
+            }
+
+            //si NO hay errores de validación de los datos del form
+            if (count($errores) == 0) {
+                //hashea o encripta la clave y la asigna a $clave (128carácteres)
+                //hash_hmac() requiere: "algoridmo", "clave a hashear (string)", "clave secreta (string)"
+                $clave = hash_hmac("sha512", $clave, CLAVE);
+
+                //busca el correo (usuario) en la DB
+                $data = $this->modelo->buscarCorreo($usuario);
+
+                //valida si data contiene algo y si la clave de la DB es igual a la del form
+                if ($data && $data['clave'] == $clave) {
+                    
+                    //inicia sesión, nueva instancia de class Sesión() y asigna el objto a $sesion
+                    $this->sesion = new Sesion();
+
+                    //método que asigna el usuario enviado en $data al $_SESSION['usuario']
+                    $this->sesion->iniciarLogin($data);
+
+                    //debuguear($this->sesion->getUsuario());
+                }
+                //llama método mensaje, enviando datos
+                $this->mensaje(
+                    "Entrada",
+                    "Entrada al Sistema de Inventario",
+                    "Hubo un error al loguearse en el sistema. El usuario o la contraseña, no son válidos.",
+                    "LoginController",
+                    "danger"
+                );
+            }
+        }
+
+        //define datos para enviar a la vista
+        $datos = [
+            "titulo" => "Entrada",
+            "subtitulo" => "Entrada al Sistema de inventario",
+            "errores" => $errores,
+        ];
+
+        //llama al método vista enviando el nombre de la vista y datos
+        $this->vista("loginCaratulaVista", $datos);
+    }
+
 }
+?>
 
