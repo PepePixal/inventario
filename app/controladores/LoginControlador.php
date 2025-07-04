@@ -8,7 +8,8 @@ class LoginControlador extends Controlador
 
     function __construct()
     {
-        //llama al método modelo (en Controlador), enviando el nombre del modelo a instanciar
+        //llama al método modelo() (en Controlador), enviándole el nombre del modelo a instanciar y
+        //lo asigna a $this->modelo
         $this->modelo = $this->modelo("LoginModelo");
     }
 
@@ -158,10 +159,13 @@ class LoginControlador extends Controlador
                 //hashea o encripta la clave1 y la asigna a $clave (120carácteres)
                 //hash_hmac() requiere: "algoridmo", "clave a hashear (string)", "clave secreta (string)"
                 $clave = hash_hmac("sha512", $clave1, CLAVE);
+
                 //define arreglo con la clave y el id
                 $data = ["clave"=>$clave, "id"=>$id];
 
+                //si el método actualizarClaveAcceso() retorna true:
                 if ($this->modelo->actualizarClaveAcceso($data)) {
+                    //llama met mensaje() éxito
                     $this->mensaje(
                         "Cambio Password",
                         "Cambio del password de acceso",
@@ -171,6 +175,7 @@ class LoginControlador extends Controlador
                     );
                 
                 } else {
+                    //llama met mensaje() error
                     $this->mensaje(
                         "Cambio Password",
                         "Cambio del password de acceso",
