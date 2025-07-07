@@ -11,6 +11,133 @@
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <a href="#" class="navbar-brand">Inventario</a>
+        <?php
+        if (isset($datos['menu']) && $datos['menu'] == true) {
+            if (isset($datos['admon']) && $datos['admon'] == true) {
+
+                print "<ul class='navbar-nav' mr-auto mt-2 mt-lg-0'>";
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/compras, con class condicionada
+                        print "<a href='".RUTA."compras' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "compras"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="compras") print "ative";
+                        print " '>Compras</a> ";
+                    print "</li>";
+
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/entradas, con class condicionada
+                        print "<a href='".RUTA."entradas' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "entradas"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="entradas") print "ative";
+                        print " '>Entradas</a> ";
+                    print "</li>";
+
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/ventas, con class condicionada
+                        print "<a href='".RUTA."ventas' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "ventas"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="ventas") print "ative";
+                        print " '>Ventas</a> ";
+                    print "</li>";
+                    
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/devoluciones, con class condicionada
+                        print "<a href='".RUTA."devoluciones' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "devoluciones"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="devoluciones") print "ative";
+                        print " '>Devoluciones</a> ";
+                    print "</li>";
+
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/stock, con class condicionada
+                        print "<a href='".RUTA."stock' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "stock"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="stock") print "ative";
+                        print " '>Stock</a> ";
+                    print "</li>";
+
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/proveedores, con class condicionada
+                        print "<a href='".RUTA."proveedores' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "proveedores"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="proveedores") print "ative";
+                        print " '>Proveedores</a> ";
+                    print "</li>";
+                    
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/productos, con class condicionada
+                        print "<a href='".RUTA."productos' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "productos"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="productos") print "ative";
+                        print " '>Productos</a> ";
+                    print "</li>";
+
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/usuarios, con class condicionada
+                        print "<a href='".RUTA."usuarios' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "usuarios"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="usuarios") print "ative";
+                        print " '>Usuarios</a> ";
+                    print "</li>";
+                    
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/categorias, con class condicionada
+                        print "<a href='".RUTA."categorias' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "categorias"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="categorias") print "ative";
+                        print " '>Categorias</a> ";
+                    print "</li>";
+
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/paises, con class condicionada
+                        print "<a href='".RUTA."paises' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "paises"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="paises") print "ative";
+                        print " '>Paises</a> ";
+                    print "</li>";
+
+                    print "<li class='nav-item'>";
+                        //hipervínculo a /inventario/respaldo, con class condicionada
+                        print "<a href='".RUTA."respaldo' class='nav-link  ";
+                        //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "respaldo"
+                        //agrega la class "active" a <a href=
+                        if (isset($datos['activo']) && $datos['activo']=="respaldo") print "ative";
+                        print " '>Respaldo</a> ";
+                    print "</li>";
+                print "</ul>";
+            }
+
+            print "<ul class='nav nav-bar-nav ms-auto'>";
+                print "<li class='nav-item'>";
+                    print "<a href='".RUTA."tablero/perfil' class='nav-link'>";
+                        print' <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-person-square" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                        </svg> ';
+                    print "</a>";
+                print "</li>";
+
+                print "<li class='nav-item'>";
+                    print "<a href='".RUTA."tablero/logout' class='nav-link'>";
+                        print' <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                        </svg> ';
+                    print "</a>";
+                print "</li>";
+            print "</ul>";
+        }
+        ?>
     </nav>
     <div class="container-fluid">
         <div class="row content">

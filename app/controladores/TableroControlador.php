@@ -31,11 +31,23 @@ class TableroControlador extends Controlador
             "titulo" => "Sistema de Inventario",
             "subtitulo" => $this->usuario['nombres']." ".$this->usuario['apellidos'],
             "usuario" => $this->usuario,
+            "admon" => true,
             "data" => [],
             "menu" => true
         ];
 
         $this->vista("tableroCaratulaVista", $datos);
+    }
+
+    public function logout()
+    {
+        //si hay un usuario logueado con la sesión iniciada
+        if (isset($_SESSION['usuario'])) {
+            //llama método que finaliza la sesión o login
+            $this->sesion->finalizarLogin();
+        }
+        //redirige al usuario al inicio
+        header("location:".RUTA);
     }
 }
 
