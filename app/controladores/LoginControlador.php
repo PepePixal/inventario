@@ -14,10 +14,34 @@ class LoginControlador extends Controlador
 
     //muestra la vista Inicial para loguearse 
     public function caratula()  {
+
+        //valida si existen datos de cookies en la super glob $_COOKIES
+        if (isset($_COOKIE['datos'])) {
+
+            //divide el string de $_COOKIE['DATOS'], en string separados por | y genera un 
+            //nuevo arreglo indexado que asigna a $datos_array
+            $datos_array = explode("|", $_COOKIE['datos']);
+            //obtiene el usuario (email) de $datos_array
+            $usuario = $datos_array[0];
+            //obtiene la clave encriptada de $datos_array y la desencripta
+            $clave = Helper::desencriptar($datos_array[1]);
+            //define nuevo arreglo data con el usuario y la clave, para enviar a la vista
+            $data = [
+                'usuario' => $usuario,
+                'clave' => $clave
+            ];
+        
+          //si no hat cookies  
+        } else {
+            //asigna arreglo vacio, para que la vista no de undefined $data en $datos 
+            $data = [];
+        }
+
         //define arreglos con datos a enviar a la vista
         $datos = [
             "titulo" => "Entrada",
-            "subtitulo" => "Entrada al Sistema de inventario"
+            "subtitulo" => "Entrada al Sistema de inventario",
+            "data" => $data
         ];
 
         //llama al método vista enviando el nombre de la vista y datos
@@ -228,6 +252,32 @@ class LoginControlador extends Controlador
             $usuario = $_POST["usuario"] ?? "";
             $clave = $_POST["clave"] ?? "";
 
+            //si $_POST['recordar'] (usuario logueado) esta definida y no es NULL,
+            //significa que está checked,
+            //entonces ? asinga "on" a $recordar, de lo contrario : asigna "off"
+            $recordar = isset($_POST['recordar']) ? "on" : "off";
+
+            //$valor será, el email de usuario | y la clave encriptada.
+            $valor = $usuario."|".Helper::encriptar($clave);
+
+            //si el checkbox recordar está en on, para recordar el usuario y la contraseña de la sesión:
+            if ($recordar == "on") {
+                //time() retorna (unix time), la cantidad de segundos transcurridos desde el 1/1/1970 hasta hoy,
+                //si le suman los segundos que tiene una semana (60*60*24*7), se obtiene tenemos la cantidad de segundos
+                //hasta una semana posterior a hoy. Esta cantidad de segundos se usará para indicar el tiempo de validez
+                //de las cookies que generemos. Las cookies caduran al cabo de una semana de haber sido generadas.
+                $fecha = time() + (60*60*24*7);
+            } else {
+                //obtiene una fecha, en segundos, expirada por un segundo
+                $fecha = time()-1;
+            }
+
+            //setcookie() envia la cabecera HTTP necesaria al navegador, para crear o actualizar una cookie.
+            //requiere: nom_cookie, valor (opcional), caducidad, en seg unix time (opcinal), RUTA (opcional) 
+            setcookie("datos", $valor, $fecha, RUTA);
+
+            // debuguear($valor);
+
             //validaciones de los datos del form, recibido en POST
             if (empty($usuario)) {
                 array_push($errores, "El Usuario (email) es obligatorio");
@@ -259,8 +309,10 @@ class LoginControlador extends Controlador
                     //método que asigna el usuario enviado en $data al $_SESSION['usuario']
                     $this->sesion->iniciarLogin($data);
 
-                    //debuguear($this->sesion->getUsuario());
+                    //redirige a la ruta url inventario/TableroControlador/    
+                    header('Location:'.RUTA."TableroControlador");
                 }
+                
                 //llama método mensaje, enviando datos
                 $this->mensaje(
                     "Entrada",

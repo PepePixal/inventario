@@ -4,7 +4,9 @@
  */
 class Control
 {
+    //controlador por defecto
     private $controlador = "LoginControlador";
+    //método por defecto
     private $metodo = "caratula";
     private $parametros = [];
 
@@ -14,20 +16,21 @@ class Control
         //que divide la url por (/), retorna un arreglo indexado con las partes y lo asigna a $url
         $url = $this->separarURL();   
 
-        //comprueba si la url no es un arreglo vacio y si dentro de ../app/controladores/ ,
-        //existe un archivo con el nombre igual al valor del primer elemento [0] del arreglo $url + .php
+        //comprueba si $url no es un arreglo vacio y si dentro de ../app/controladores/ ,
+        //existe un archivo con el nombre igual al valor del primer elemento del arreglo $url[0] + ".php"
         //(ucwords() pone en mayúscula la primera letra del valor del elemento [0] de $url)
         if ($url !=[] && file_exists("../app/controladores/" . ucwords($url[0]) . ".php")) {
 
             //** Controlador */
-            //Obtiene el archivo controlador .php, de la $url/
-            //asigna a controlador, el primer valor [0] del arreglo $url (obtenido de $_GET['url'])
+            //Obtiene el nombre del archivo controlador, del primre elemento del arreglo $url[0],
+            //poniendo la primera letra en mayùscula (ucwords()) y lo asigna a controlador
             $this->controlador = ucwords($url[0]);
             //elimina el valor del primer elemento [0] del arreglo $url
             unset($url[0]);
         }
 
-        //Carga el controlador recibido en la url
+        //Carga el controlador recibido en la url.
+        //controlador tiene asignado "LoginControlador", por defecto, por si viene vacio
         require_once("../app/controladores/" . ucwords($this->controlador) . ".php");
         //Crea la instancia de la clase del controlador y la reasigna a $this->controlador como objeto
         $this->controlador = new $this->controlador;
@@ -38,7 +41,8 @@ class Control
             //valida si en el objeto $this->controlador existe el método con nombre igual
             //al valor del segundo elemento [1] del arreglo $url
             if (method_exists($this->controlador, $url[1])) {
-                //asigna a $this->metodo el valor del elemento [1] de $url
+                //asigna a $this->metodo el valor del elemento [1] de $url.
+                //metodo tiene asignado "caratula", por defecto, por si viene vacio
                 $this->metodo = $url[1];
                 //elimina el valor del segundo elemento del arreglo $url
                 unset($url[1]);
@@ -50,11 +54,11 @@ class Control
         //de lo contrario : le asigna un arreglo vacio []
         $this->parametros = $url ? array_values($url) : [];
         
-        //** Ejecutar el método del controlador, recibidos en la url */
-        //requiere la función, en un arreglo donde se indica el [archivo y el método] y 
-        //los parámetros si los hay
+        //** Call back que llama a la fución en $this-metodo, de la class en $this->controlador*/
+        //** Por defecto, el controlador es "LoginControlador" y el método "cartula" */
+        //La función php, requiere en un arreglo donde se indica el [archivo y la función] y 
+        //los parámetros si los hay. Retorna el resultado de la función o False
         call_user_func_array([$this->controlador, $this->metodo], $this->parametros );
-
     }
     
     //función que sanetiza la URL recibida y retorna un :array

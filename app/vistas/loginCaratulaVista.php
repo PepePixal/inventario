@@ -19,12 +19,22 @@
     <form action="<?php print RUTA; ?>LoginControlador/verificar" method="post">
         <div class="form-group text-start">
             <label for="usuario">* Usuario:</label>
-            <input id="usuario" name="usuario" type="email" class="form-control" placeholder="Usuario. Tu correo electrónico" required>
+            <!-- para value=, si existe $datos['data']['usuario'] entonces ? le asigna 'usuario' a value=, de lo contrario : no asigna nada a value= -->
+            <input id="usuario" name="usuario" type="email" class="form-control" placeholder="Usuario. Tu correo electrónico" value="<?php print isset($datos['data']['usuario']) ? $datos['data']['usuario'] : ''; ?>"  required >
         </div>
+        
         <div class="form-group text-start mt-2">
             <label for="clave">* Contraseña:</label>
-            <input id="clave" name="clave" type="password" class="form-control" placeholder="Tu contraseña" required>
+             <!-- para value=, si existe $datos['data']['clave'] entonces ? le asigna 'clave' a value=, de lo contrario : no asigna nada a value= -->
+            <input id="clave" name="clave" type="password" class="form-control" placeholder="Tu contraseña" value="<?php print isset($datos['data']['clave']) ? $datos['data']['clave'] : ''; ?>"  required>
         </div>
+
+        <div class="form-group text-start mt-2">
+            <!-- si el elemtno 'usuario' está definido y no son NULL, entonces ? asigna (print) 'checked' al input checkbox, de lo contrario : no asigna (print) nada '' -->
+            <input type="checkbox" name="recordar" <?php print isset($datos['data']['usuario']) ? 'checked' : ''; ?> >
+            <label for="recordar">Recordar</label>
+        </div>
+
         <div class="form-group text-start mt-3 mb-3">
             <input type="submit" value="Enviar" class="btn btn-success">
         </div>
