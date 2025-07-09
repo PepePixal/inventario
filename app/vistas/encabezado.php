@@ -10,7 +10,7 @@
     </head>
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <a href="#" class="navbar-brand">Inventario</a>
+        <a href="<?php print RUTA ?>" class="navbar-brand">Inventario</a>
         <?php
         if (isset($datos['menu']) && $datos['menu'] == true) {
             if (isset($datos['admon']) && $datos['admon'] == true) {

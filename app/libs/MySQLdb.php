@@ -30,9 +30,9 @@ class MySQLdb
         }   
     }
 
-    //** SELECT */
-    //métodos, con la instrucción SELECT SQL, recibida en $sql,
-    //fetch() retorna :array, con el primer registro encontrado 
+    //** funciones con SELECT en la sentencia SQL recibida */
+    
+    //consulta que retorna el primer registro encontrado
     public function query($sql='') :array
     {
         //valida si squl viene vacio, retorna false
@@ -41,6 +41,7 @@ class MySQLdb
         //consulta query, con la sentencia SQL recibida, llamando a la conn (conexión BD),
         //query() retorna un PDOStatement objec, o false si falla
         $stmt = $this->conn->query($sql);
+
         //obtiene la primera fila (fetcht()), de la respuesta en $stmt y
         //la asigna a $salida como arreglo
         $salida = $stmt -> fetch();
@@ -53,6 +54,7 @@ class MySQLdb
         return [];
     }
 
+    //consulta que retorna todos los registros encontrados que coincidan
     public function querySelect($sql='') {
 
         //valida Si sql viene vacio, retorna false
@@ -86,7 +88,7 @@ class MySQLdb
         return $data;
     }
 
-    //** INSERT, UPDATE, DELETE */
+    //** funciones sin SELECT en la instrucción SQL recibida. Para INSERT, UPDATE, DELETE */
     //método, para INSERT o UPDATE o DELETE, recibida en $sql y $data
      
     public function queryNoSelect($sql, $data="")

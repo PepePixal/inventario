@@ -33,8 +33,8 @@
             print "<tr>";
                 print "<td class='text-left'>".$datos["data"][$i]['id']."</td>";
                 print "<td class='text-left'>".$datos["data"][$i]['pais']."</td>";
-                print "<td><a href='".RUTA."paises/modificar".$datos["data"][$i]["id"]."' class='btn btn-info'>Modificar</a></td>";
-                print "<td><a href='".RUTA."paises/eliminar".$datos["data"][$i]["id"]."' class='btn btn-danger'>Eliminar</td>";
+                print "<td><a href='".RUTA."PaisesControlador/modificar/".$datos["data"][$i]["id"]."' class='btn btn-info'>Modificar</a></td>";
+                print "<td><a href='".RUTA."PaisesControlador/eliminar/".$datos["data"][$i]["id"]."' class='btn btn-danger'>Eliminar</td>";
             print "</tr>";
         }
         ?>

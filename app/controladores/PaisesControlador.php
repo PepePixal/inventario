@@ -80,9 +80,30 @@ class PaisesControlador extends Controlador
                     }
                 
                 //si el valor de $id no es una cadena vacia "",
-                //significa que el $id existe y será para una modificación
+                //significa que el $id existe y será para modificar
                 } else {
-                    debuguear("para modificar o eliminar");
+                    //llama modificar() de modelo y si retorna true
+                    if ($this->modelo->modificar($data)) {
+                        //llama método para mensaje de exito
+                        $this->mensaje(
+                            "Modificar País",
+                            "Modificar nombre de País",
+                            "Se modificó orrectamente el pais: ".$pais,
+                            "PaisesControlador",
+                            "success"
+                        );
+                    
+                    //si modificar() retorna false
+                    } else {
+                        //llama método para mensaje de error
+                        $this->mensaje(
+                            "Modificar País",
+                            "Modificar nombre de País",
+                            "Error al modificó el pais: ".$pais,
+                            "PaisesControlador",
+                            "danger"
+                        );
+                    }
                 }
             }
         }
@@ -106,11 +127,66 @@ class PaisesControlador extends Controlador
 
     }
 
+
+    //activa la columna baja del registro pais, según el id
+    public function bajaLogica($id='')
+    {
+        //valida si el id está definido no es NULL y no está vacio
+        if (isset($id) && $id!='') {
+            //llama al método bajaLogica() de modelo y si retorna true
+            if ($this->modelo->bajaLogica($id)) {
+                //llama mensaje de exito
+                $this->mensaje(
+                    "Eliminar País",
+                    "Eliminar el País",
+                    "Se 'eliminó' correctamente el pais",
+                    "PaisesControlador",
+                    "success"
+                );
+
+            // si el método bajaLogica() de modelo retorna false
+            } else {
+                //llama mensaje de error
+                $this->mensaje(
+                    "Eliminar País",
+                    "Eliminar el País",
+                    "Hubo un error al 'eliminar' el pais",
+                    "PaisesControlador",
+                    "danger"
+                );
+            }
+        }
+    }
+
+    //Borrado lógico, asignando el estado de baja al registro pais, según su id.
+    public function eliminar($id="")
+    {
+        //obtinene el registro pais, según su id
+        $data = $this->modelo->getId($id);
+
+        //arreglo con datos para enviar a la vista, una vez obtenida la $data de la BD
+        $datos = [
+            "titulo" => "País Eliminar",
+            "subtitulo" => "Eliminar el País",
+            "activo" => "paises",
+            "admon" => true,
+            "menu" => true,
+            "errores" => [],
+            "data" => $data,
+            "baja" => true
+        ];
+
+        //llama método vista para mostrar el registro obtenido
+        $this->vista("paisesAltaVista", $datos);
+    }
+
+    //muestra carátula (tablero o dashboard) de Paises
     public function caratula($pag='')
     {
         //obtiene la info de la tabla paises
         $data = $this->modelo->getTabla();
 
+        //arreglo con datos para enviar a la vista, una vez obtenida la $data de la BD
         $datos = [
             "titulo" => "Países",
             "subtitulo" => "Países",
@@ -123,6 +199,26 @@ class PaisesControlador extends Controlador
 
         //llam método enviando el nombre del archivo y los datos 
         $this->vista("paisesCaratulaVista", $datos);
+    }
+
+    //modificar el país por su id
+    public function modificar($id)
+    {
+        //obtener registro de la tabla por su id con el método getId() en modelo
+        $data = $this->modelo->getId($id);
+
+        //arreglo con datos para enviar a la vista, una vez obtenida la $data de la BD
+        $datos = [
+            "titulo" => "Modificar País",
+            "subtitulo" => "Modificar País",
+            "activo" => "paises",
+            "admon" => true,
+            "menu" => true,
+            "data" => $data
+        ];
+
+        //llema método vista() enviando atributos
+        $this->vista("paisesAltaVista", $datos);
     }
 }
 ?>
