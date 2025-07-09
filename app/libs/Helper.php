@@ -1,19 +1,26 @@
 <?php
-/** */
-
-function debuguear($data = '', $detener = true)
-{
-    print "<pre>";
-        //muestra la información, estructurada, de la variable
-        var_dump($data);
-        print "<pre>";
-        if ($detener) {
-            exit;
-        }
-}
 
 class Helper
 {
+
+    //revisa y sanitiza una cadena de texto, antes de agregarla a la BD
+    public static function cadena($cadena)
+    {
+        //define array con algunos términos peligrosos a buscar
+        $buscar = array('^', 'delete', 'drop', 'truncate', 'exec', 'system');
+        //define array con los terminos para reemplazar a los peligrosos
+        $reemplazar = array('-', 'dele*te', 'dr*op', 'trunca*te', 'ex*ec', 'syst*er');
+        //str_replac() busca y reemplaza las cadenas de la $cadena recibida) y
+        //trim() elimina espacios en blanco al inicio y al final de la cadena
+        $cadena = trim(str_replace($buscar, $reemplazar, $cadena));
+        //htmlentities() convierte caracteres especiales HTML en sus correspondientes entidades HTML. 
+        //addslashes() escapa comillas simples ('), comillas dobles ("), barras invertidas (\) y caracteres NUL
+        //añadiendo una barra invertida antes de estos caracteres.(\') (\")(\\)
+        $cadena = addslashes(htmlentities($cadena));
+        //retorna la cadena sanetizada
+        return $cadena;
+    }
+
     //con static podemos llamar la función (nom_class::nom_funcion()),
     //sin necesidad de crear una nueva instancia de su class.
     // Requiere argumentos  
@@ -62,6 +69,17 @@ class Helper
         return $cadena;
     }
 
+}
+
+function debuguear($data = '', $detener = true)
+{
+    print "<pre>";
+        //muestra la información, estructurada, de la variable
+        var_dump($data);
+        print "<pre>";
+        if ($detener) {
+            exit;
+        }
 }
 
 

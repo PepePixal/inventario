@@ -11,7 +11,7 @@ class TableroControlador extends Controlador
         //Crea sesión
         $this->sesion = new Sesion();
 
-        //si getLogin() retorna el arreglo del usuario logueado
+        //si getLogin() retorna true, el usuario está logueado
         if ($this->sesion->getLogin()) {   
             //obtiene el modelo TableroModelo y lo asigna a modelo
             $this->modelo = $this->modelo("TableroModelo");

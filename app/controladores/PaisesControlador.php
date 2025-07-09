@@ -1,0 +1,128 @@
+<?php
+
+class PaisesControlador extends Controlador 
+{
+    private $usuario = "";
+    private $modelo = "";
+    private $sesion;
+    
+    function __construct()
+    {
+        //Crea sesión
+        $this->sesion = new Sesion();
+
+        //si getLogin() retorna true
+        if ($this->sesion->getLogin()) {   
+            //obtiene el modelo PaisesModelo y lo asigna a modelo
+            $this->modelo = $this->modelo("PaisesModelo");
+            //obtiene el arreglo usuario de la sesión y lo asigna a usuario
+            $this->usuario = $this->sesion->getUsuario();
+
+        //si NO se ha obtenido el usuario logueado
+        } else {
+            //redirige al inicio (inventario)
+            header("location:".RUTA);
+        }
+    }
+
+    public function alta()
+    {
+        //define arreglos
+        $data = array();
+        $errores = array();
+
+        //valida si el SERVER ha llamado a la función, con el método POST
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            //obtiene el id de POST o si viene vacio, le asigna ""
+            $id = $_POST['id'] ?? "";
+
+            //aplica método cadena() a pais del POST, para sanitizar, por seguridad, 
+            //antes de guardarlo en la tabla de la BD
+            $pais = Helper::cadena($_POST['pais'] ?? "");
+
+            //valida que $pais no venga vacio del formulario
+            if (empty($pais)) {
+                array_push($errores, "El nombre del Pais es necesario");
+            }
+
+            //valida si no hay errores de validación
+            if (empty($errores)) {
+                //genera arreglo $data con la info del form
+                $data = [
+                    "id" =>$id,
+                    "pais" => $pais
+                ];
+
+                //limpia los espacios en blanco de $id y valida si el valor de $id
+                //es una cadena vacia "", significa que el id no existe y podemos dar un alta nueva.
+                if (trim($id)==="") {
+
+                    //envia $data al método alta() del modelo y si retorna true
+                    if ($this->modelo->alta($data)) {
+                        //llama al método mensaje de Controlador, enviando arguementos, exito
+                        $this->mensaje(
+                            "Alta País",
+                            "Alta de un nuevo País",
+                            "Se agregó correctamente el pais: ".$pais,
+                            "PaisesControlador",
+                            "success"
+                        );
+                    // si el método alta() no ha retornado true  
+                    } else {
+                        //llama al método mensaje de Controlador, enviando argumentos de error
+                        $this->mensaje(
+                            "Error Alta País",
+                            "Error al agregar un nuevo País",
+                            "Error al agregar el nuevo pais ".$pais,
+                            "PaisesControlador",
+                            "danger"
+                        );
+                    }
+                
+                //si el valor de $id no es una cadena vacia "",
+                //significa que el $id existe y será para una modificación
+                } else {
+                    debuguear("para modificar o eliminar");
+                }
+            }
+        }
+
+        //valida si $errores NO está vacio o el método NO ha sido tipo POST
+        if (!empty($errores) || $_SERVER['REQUEST_METHOD'] != "POST") {
+            //define arreglo $datos para la vista
+            $datos = [
+                "titulo" => "Alta País",
+                "subtitulo" => "Alta de nuevo País",
+                "activo" => "paises",
+                "menu" => true,
+                "admon" => true,
+                "errores" => $errores,
+                "data" => $data
+            ];
+
+            //llama a vista() enviando nom archivo.php y data
+            $this->vista("paisesAltaVista", $datos);
+        }
+
+    }
+
+    public function caratula($pag='')
+    {
+        //obtiene la info de la tabla paises
+        $data = $this->modelo->getTabla();
+
+        $datos = [
+            "titulo" => "Países",
+            "subtitulo" => "Países",
+            "usuario" => $this->usuario,
+            "activo" => "paises",
+            "admon" => true,
+            "data" => $data,
+            "menu" => true
+        ];
+
+        //llam método enviando el nombre del archivo y los datos 
+        $this->vista("paisesCaratulaVista", $datos);
+    }
+}
+?>

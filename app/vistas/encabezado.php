@@ -21,7 +21,7 @@
                         print "<a href='".RUTA."compras' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "compras"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="compras") print "ative";
+                        if (isset($datos['activo']) && $datos['activo']=="compras") print "active";
                         print " '>Compras</a> ";
                     print "</li>";
 
@@ -30,7 +30,7 @@
                         print "<a href='".RUTA."entradas' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "entradas"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="entradas") print "ative";
+                        if (isset($datos['activo']) && $datos['activo']=="entradas") print "active";
                         print " '>Entradas</a> ";
                     print "</li>";
 
@@ -39,7 +39,7 @@
                         print "<a href='".RUTA."ventas' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "ventas"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="ventas") print "ative";
+                        if (isset($datos['activo']) && $datos['activo']=="ventas") print "active";
                         print " '>Ventas</a> ";
                     print "</li>";
                     
@@ -48,7 +48,7 @@
                         print "<a href='".RUTA."devoluciones' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "devoluciones"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="devoluciones") print "ative";
+                        if (isset($datos['activo']) && $datos['activo']=="devoluciones") print "active";
                         print " '>Devoluciones</a> ";
                     print "</li>";
 
@@ -57,7 +57,7 @@
                         print "<a href='".RUTA."stock' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "stock"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="stock") print "ative";
+                        if (isset($datos['activo']) && $datos['activo']=="stock") print "active";
                         print " '>Stock</a> ";
                     print "</li>";
 
@@ -66,7 +66,7 @@
                         print "<a href='".RUTA."proveedores' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "proveedores"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="proveedores") print "ative";
+                        if (isset($datos['activo']) && $datos['activo']=="proveedores") print "active";
                         print " '>Proveedores</a> ";
                     print "</li>";
                     
@@ -75,7 +75,7 @@
                         print "<a href='".RUTA."productos' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "productos"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="productos") print "ative";
+                        if (isset($datos['activo']) && $datos['activo']=="productos") print "active";
                         print " '>Productos</a> ";
                     print "</li>";
 
@@ -84,7 +84,7 @@
                         print "<a href='".RUTA."usuarios' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "usuarios"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="usuarios") print "ative";
+                        if (isset($datos['activo']) && $datos['activo']=="usuarios") print "active";
                         print " '>Usuarios</a> ";
                     print "</li>";
                     
@@ -93,17 +93,17 @@
                         print "<a href='".RUTA."categorias' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "categorias"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="categorias") print "ative";
+                        if (isset($datos['activo']) && $datos['activo']=="categorias") print "active";
                         print " '>Categorias</a> ";
                     print "</li>";
 
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/paises, con class condicionada
-                        print "<a href='".RUTA."paises' class='nav-link  ";
+                        print "<a href='".RUTA."PaisesControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "paises"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="paises") print "ative";
-                        print " '>Paises</a> ";
+                        if (isset($datos['activo']) && $datos['activo']=="paises") print "active";
+                        print " '>Países</a> ";
                     print "</li>";
 
                     print "<li class='nav-item'>";
@@ -111,7 +111,7 @@
                         print "<a href='".RUTA."respaldo' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "respaldo"
                         //agrega la class "active" a <a href=
-                        if (isset($datos['activo']) && $datos['activo']=="respaldo") print "ative";
+                        if (isset($datos['activo']) && $datos['activo']=="respaldo") print "active";
                         print " '>Respaldo</a> ";
                     print "</li>";
                 print "</ul>";
