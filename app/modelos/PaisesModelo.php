@@ -37,9 +37,21 @@ class PaisesModelo
 
     }
 
+    //obtinene la cantidad de registros, de alta, de la tabla paises
+    public function getNumRegistros()
+    {
+        //define la instrucción SQL, que cuenta la cantida de registros
+        $sql = "SELECT COUNT(*) FROM paises WHERE baja=0";
+        
+        //ejecuta la consulta query()
+        $salida = $this->db->query($sql);
 
-    //obtiene los datos de la tabla paises, requiere
-    //el registro inicio y la cantidad de registroa a mostrar
+        //retorna solo la cantidad de la consulta
+        return $salida["COUNT(*)"];
+    }
+
+    //obtiene los datos de la tabla paises, requiere: el registro inicio,
+    //a partir del cual obtener y la cantidad de registros a obtener
     public function getTabla($inicio=1, $tamano=0)
     {
         //define la intrucción SQL . concatenada, para la consulta

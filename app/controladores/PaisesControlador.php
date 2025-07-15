@@ -35,6 +35,8 @@ class PaisesControlador extends Controlador
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             //obtiene el id de POST o si viene vacio, le asigna ""
             $id = $_POST['id'] ?? "";
+            //obtiene la pagina de POST o si viene vacio, le asigna "1"
+            $pagina = $_POST['pagina'] ?? "1";
 
             //aplica método cadena() a pais del POST, para sanitizar, por seguridad, 
             //antes de guardarlo en la tabla de la BD
@@ -64,7 +66,7 @@ class PaisesControlador extends Controlador
                             "Alta País",
                             "Alta de un nuevo País",
                             "Se agregó correctamente el pais: ".$pais,
-                            "PaisesControlador",
+                            "PaisesControlador/".$pagina,
                             "success"
                         );
                     // si el método alta() no ha retornado true  
@@ -74,7 +76,7 @@ class PaisesControlador extends Controlador
                             "Error Alta País",
                             "Error al agregar un nuevo País",
                             "Error al agregar el nuevo pais ".$pais,
-                            "PaisesControlador",
+                            "PaisesControlador/".$pagina,
                             "danger"
                         );
                     }
@@ -89,7 +91,7 @@ class PaisesControlador extends Controlador
                             "Modificar País",
                             "Modificar nombre de País",
                             "Se modificó orrectamente el pais: ".$pais,
-                            "PaisesControlador",
+                            "PaisesControlador/".$pagina,
                             "success"
                         );
                     
@@ -100,7 +102,7 @@ class PaisesControlador extends Controlador
                             "Modificar País",
                             "Modificar nombre de País",
                             "Error al modificó el pais: ".$pais,
-                            "PaisesControlador",
+                            "PaisesControlador/".$pagina,
                             "danger"
                         );
                     }
@@ -124,12 +126,11 @@ class PaisesControlador extends Controlador
             //llama a vista() enviando nom archivo.php y data
             $this->vista("paisesAltaVista", $datos);
         }
-
     }
 
 
     //activa la columna baja del registro pais, según el id
-    public function bajaLogica($id='')
+    public function bajaLogica($id='', $pagina="1")
     {
         //valida si el id está definido no es NULL y no está vacio
         if (isset($id) && $id!='') {
@@ -140,7 +141,7 @@ class PaisesControlador extends Controlador
                     "Eliminar País",
                     "Eliminar el País",
                     "Se 'eliminó' correctamente el pais",
-                    "PaisesControlador",
+                    "PaisesControlador/".$pagina,
                     "success"
                 );
 
@@ -151,15 +152,54 @@ class PaisesControlador extends Controlador
                     "Eliminar País",
                     "Eliminar el País",
                     "Hubo un error al 'eliminar' el pais",
-                    "PaisesControlador",
+                    "PaisesControlador/".$pagina,
                     "danger"
                 );
             }
         }
     }
 
+    //muestra carátula (tablero o dashboard) de Paises
+    public function caratula($pagina='1')
+    {
+        //obtiene la cantidad de registros de alta, de la tabla paises
+        $num = $this->modelo->getNumRegistros();
+
+        //obtiene el registro inicial, a parti del cual mostrar
+        $inicio = ($pagina-1)*TAMANO_PAGINA;
+
+        //obtiene el total de páginas a mostrar, según la cantidad total de registros y
+        //el número de registros por página.
+        //ceil() redondea el resultado de la división, al alza
+        $totalPaginas = ceil($num/TAMANO_PAGINA);
+
+        //obtiene los registros de la tabla, a partir de registro inicial $inicio y
+        //según la cantidad de registros a mostrar, por página
+        $data = $this->modelo->getTabla($inicio, TAMANO_PAGINA);
+
+        //arreglo con datos para enviar a la vista, una vez obtenida la $data de la BD
+        $datos = [
+            "titulo" => "Países",
+            "subtitulo" => "Países",
+            "usuario" => $this->usuario,
+            "activo" => "paises",
+            "admon" => true,
+            "data" => $data,
+            "menu" => true,
+            "pag" => [
+                "totalPaginas" => $totalPaginas,
+                "regresa" => "PaisesControlador",
+                "pagina" => $pagina
+            ]
+        ];
+
+        //llam método enviando el nombre del archivo y los datos 
+        $this->vista("paisesCaratulaVista", $datos);
+    }
+
+
     //Borrado lógico, asignando el estado de baja al registro pais, según su id.
-    public function eliminar($id="")
+    public function eliminar($id="", $pagina="1")
     {
         //obtinene el registro pais, según su id
         $data = $this->modelo->getId($id);
@@ -173,6 +213,7 @@ class PaisesControlador extends Controlador
             "menu" => true,
             "errores" => [],
             "data" => $data,
+            "pagina" => $pagina,
             "baja" => true
         ];
 
@@ -180,29 +221,8 @@ class PaisesControlador extends Controlador
         $this->vista("paisesAltaVista", $datos);
     }
 
-    //muestra carátula (tablero o dashboard) de Paises
-    public function caratula($pag='')
-    {
-        //obtiene la info de la tabla paises
-        $data = $this->modelo->getTabla();
-
-        //arreglo con datos para enviar a la vista, una vez obtenida la $data de la BD
-        $datos = [
-            "titulo" => "Países",
-            "subtitulo" => "Países",
-            "usuario" => $this->usuario,
-            "activo" => "paises",
-            "admon" => true,
-            "data" => $data,
-            "menu" => true
-        ];
-
-        //llam método enviando el nombre del archivo y los datos 
-        $this->vista("paisesCaratulaVista", $datos);
-    }
-
     //modificar el país por su id
-    public function modificar($id)
+    public function modificar($id, $pagina="1")
     {
         //obtener registro de la tabla por su id con el método getId() en modelo
         $data = $this->modelo->getId($id);
@@ -214,6 +234,7 @@ class PaisesControlador extends Controlador
             "activo" => "paises",
             "admon" => true,
             "menu" => true,
+            "pagina" => $pagina,
             "data" => $data
         ];
 

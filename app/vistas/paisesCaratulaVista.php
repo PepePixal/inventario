@@ -33,13 +33,19 @@
             print "<tr>";
                 print "<td class='text-left'>".$datos["data"][$i]['id']."</td>";
                 print "<td class='text-left'>".$datos["data"][$i]['pais']."</td>";
-                print "<td><a href='".RUTA."PaisesControlador/modificar/".$datos["data"][$i]["id"]."' class='btn btn-info'>Modificar</a></td>";
-                print "<td><a href='".RUTA."PaisesControlador/eliminar/".$datos["data"][$i]["id"]."' class='btn btn-danger'>Eliminar</td>";
+                //el enlace lo envia por url, al método modificar, de PaisesControlador, con los parámetros "id" y "página"
+                print "<td><a href='".RUTA."PaisesControlador/modificar/".$datos["data"][$i]["id"]."/".$datos["pag"]["pagina"]."' class='btn btn-info'>Modificar</a></td>";
+                //el enlace lo envia por url, al método eliminar, de PaisesControlador, con los parámetros "id" y "página"
+                print "<td><a href='".RUTA."PaisesControlador/eliminar/".$datos["data"][$i]["id"]."/".$datos["pag"]["pagina"]."'  class='btn btn-danger'>Eliminar</td>";
             print "</tr>";
         }
         ?>
     </tbody>
     </table>
+
+    <!-- carga paginación.php -->
+    <?php include_once("paginacion.php"); ?>
+
     <a href="<?php print RUTA;?>PaisesControlador/alta/" class="btn btn-success">Nuevo País</a>
 </div>
                 

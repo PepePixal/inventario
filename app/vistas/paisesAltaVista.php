@@ -28,16 +28,20 @@
     </div>
 
     <div class="form-group text-left">
-        <!-- si se ha recibido id, desde vista, se asigna el id al value del input oculto-->
+        <!-- si se ha recibido id, desde vista, se asigna el id al value del input oculto, para enviar-->
         <input type="hidden" name="id" id="id" class="form-control"
-        value="<?php if(isset($datos['data']['id'])) { print $datos['data']['id']; } else { print ""; } ?>">
+        value="<?php if (isset($datos['data']['id'])) { print $datos['data']['id']; } else { print ""; } ?>">
+
+        <!-- si se ha recibido pagina, desde vista, se asigna la pagina al value del input oculto, para enviar-->
+        <input type="hidden" name="pagina" id="pagina" class="form-control"
+        value="<?php if (isset($datos['pagina'])) { print $datos['pagina']; } else { print "1"; } ?>">
 
         <!-- si se ha recibido baja, desde vista, muestra botnes Eliminar y Volver -->
         <?php if (isset($datos['baja'])) { ?>
-            <a href="<?php print RUTA;?>PaisesControlador/bajaLogica/<?php print $datos['data']['id']; ?>" 
+            <a href="<?php print RUTA;?>PaisesControlador/bajaLogica/<?php print $datos['data']['id']."/".$datos["pagina"]; ?>" 
             class="btn btn-danger mt-3 me-2">Eliminar País</a>
 
-            <a href="<?php print RUTA;?>PaisesControlador" class="btn btn-secondary mt-3"><- Volver</a>
+            <a href="<?php print RUTA.'PaisesControlador/'.$datos['pagina']; ?>" class="btn btn-secondary mt-3"><- Volver</a>
             <p class="mt-3 text-danger"><b>Una vez eliminado el País, no se podrá recuperar</b></p>
             
         <!-- si NO se ha recibido baja, desde vista, muestra el input Enviar país y botón Volver-->
@@ -45,7 +49,6 @@
             <input type="submit" value="Enviar país" class="btn btn-success mt-3 me-2 ">
     
             <a href="<?php print RUTA;?>PaisesControlador" class="btn btn-secondary mt-3 "><- Volver</a>
-        
         <?php } ?>
     </div>
 </form>

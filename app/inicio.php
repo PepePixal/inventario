@@ -10,6 +10,11 @@ define("LLAVE2", "acusaisalamujer");
 //clave para encriptar el password
 define("CLAVE", "arrierossomos");
 
+//paginación. registros a mostrar por página
+define("TAMANO_PAGINA", 5);
+//paginador. cantidad máxima de números por paginador
+define("PAGINAS_MAXIMAS", 4);
+
 //Constantes para Tipos de Movimientos
 define('ADMON',1);
 define('VENDEDOR',2);
