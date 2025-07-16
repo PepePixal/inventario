@@ -16,18 +16,18 @@
     }
 ?>
 
-<form action="<?php print RUTA?>PaisesControlador/alta/" method="POST">
-    <div class="form-group text-left">
-        <label for="pais">* País:</label>
+<form action="<?php print RUTA?>CategoriasControlador/alta/" method="POST">
+    <div class="form-group text-start">
+        <label for="categoria">* Categoría:</label>
         <!-- si se ha recibido pais, desde vista, se asigna el pais al value del input-->
         <!-- si se ha recibido baja, desde vista, se pone el input en disabled (desactivado)-->
-        <input type="text" name="pais" id="pais" class="form-control" required 
-        value="<?php isset($datos['data']['pais']) ? print $datos['data']['pais'] : '';?>"
+        <input type="text" name="categoria" id="categoria" class="form-control" required 
+        value="<?php isset($datos['data']['categoria']) ? print $datos['data']['categoria'] : '';?>"
         <?php if (isset($datos['baja'])) { print " disabled "; }?>
         ">
     </div>
 
-    <div class="form-group text-left">
+    <div class="form-group text-start">
         <!-- si se ha recibido id, desde vista, se asigna el id al value del input oculto, para enviar-->
         <input type="hidden" name="id" id="id" class="form-control"
         value="<?php if (isset($datos['data']['id'])) { print $datos['data']['id']; } else { print ""; } ?>">
@@ -38,16 +38,17 @@
 
         <!-- si se ha recibido baja, desde vista, muestra botnes Eliminar y Volver -->
         <?php if (isset($datos['baja'])) { ?>
-            <a href="<?php print RUTA;?>PaisesControlador/bajaLogica/<?php print $datos['data']['id']."/".$datos["pagina"]; ?>" 
-            class="btn btn-danger mt-3 me-2">Eliminar País</a>
+            <a href="<?php print RUTA;?>CategoriasControlador/bajaLogica/<?php print $datos['data']['id']."/".$datos["pagina"]; ?>" 
+            class="btn btn-danger mt-3 me-2">Eliminar Categoría</a>
 
-            <a href="<?php print RUTA.'PaisesControlador/'.$datos['pagina']; ?>" class="btn btn-secondary mt-3"><- Volver</a>
-            <p class="mt-3 text-danger"><b>Una vez eliminado el País, no se podrá recuperar</b></p>
+            <a href="<?php print RUTA.'CategoriasControlador/'.$datos['pagina']; ?>" class="btn btn-secondary mt-3"><- Volver</a>
+            <p class="mt-3 text-danger"><b>Una vez eliminada la Categoría, no se podrá recuperar</b></p>
             
             <!-- si NO se ha recibido baja, desde vista, muestra el input Enviar país y botón Volver-->
             <?php } else { ?>
-                <input type="submit" value="Enviar país" class="btn btn-success mt-3 me-2 "> 
-                <a href="<?php print RUTA;?>PaisesControlador" class="btn btn-secondary mt-3 "><- Volver</a>
+
+            <input type="submit" value="Enviar categoría" class="btn btn-success mt-3 me-2 "> 
+            <a href="<?php print RUTA;?>CategoriasControlador" class="btn btn-secondary mt-3 "><- Volver</a>
         <?php } ?>
     </div>
 </form>

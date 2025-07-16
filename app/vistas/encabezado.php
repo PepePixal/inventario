@@ -18,7 +18,7 @@
                 print "<ul class='navbar-nav' mr-auto mt-2 mt-lg-0'>";
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/compras, con class condicionada
-                        print "<a href='".RUTA."compras' class='nav-link  ";
+                        print "<a href='".RUTA."ComprasControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "compras"
                         //agrega la class "active" a <a href=
                         if (isset($datos['activo']) && $datos['activo']=="compras") print "active";
@@ -27,7 +27,7 @@
 
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/entradas, con class condicionada
-                        print "<a href='".RUTA."entradas' class='nav-link  ";
+                        print "<a href='".RUTA."EntradasControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "entradas"
                         //agrega la class "active" a <a href=
                         if (isset($datos['activo']) && $datos['activo']=="entradas") print "active";
@@ -36,7 +36,7 @@
 
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/ventas, con class condicionada
-                        print "<a href='".RUTA."ventas' class='nav-link  ";
+                        print "<a href='".RUTA."VentasControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "ventas"
                         //agrega la class "active" a <a href=
                         if (isset($datos['activo']) && $datos['activo']=="ventas") print "active";
@@ -45,7 +45,7 @@
                     
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/devoluciones, con class condicionada
-                        print "<a href='".RUTA."devoluciones' class='nav-link  ";
+                        print "<a href='".RUTA."DevolucionesControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "devoluciones"
                         //agrega la class "active" a <a href=
                         if (isset($datos['activo']) && $datos['activo']=="devoluciones") print "active";
@@ -54,7 +54,7 @@
 
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/stock, con class condicionada
-                        print "<a href='".RUTA."stock' class='nav-link  ";
+                        print "<a href='".RUTA."StockControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "stock"
                         //agrega la class "active" a <a href=
                         if (isset($datos['activo']) && $datos['activo']=="stock") print "active";
@@ -63,7 +63,7 @@
 
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/proveedores, con class condicionada
-                        print "<a href='".RUTA."proveedores' class='nav-link  ";
+                        print "<a href='".RUTA."ProveedoresControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "proveedores"
                         //agrega la class "active" a <a href=
                         if (isset($datos['activo']) && $datos['activo']=="proveedores") print "active";
@@ -72,7 +72,7 @@
                     
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/productos, con class condicionada
-                        print "<a href='".RUTA."productos' class='nav-link  ";
+                        print "<a href='".RUTA."ProductosControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "productos"
                         //agrega la class "active" a <a href=
                         if (isset($datos['activo']) && $datos['activo']=="productos") print "active";
@@ -81,7 +81,7 @@
 
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/usuarios, con class condicionada
-                        print "<a href='".RUTA."usuarios' class='nav-link  ";
+                        print "<a href='".RUTA."UsuariosControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "usuarios"
                         //agrega la class "active" a <a href=
                         if (isset($datos['activo']) && $datos['activo']=="usuarios") print "active";
@@ -90,7 +90,7 @@
                     
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/categorias, con class condicionada
-                        print "<a href='".RUTA."categorias' class='nav-link  ";
+                        print "<a href='".RUTA."CategoriasControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "categorias"
                         //agrega la class "active" a <a href=
                         if (isset($datos['activo']) && $datos['activo']=="categorias") print "active";
@@ -108,7 +108,7 @@
 
                     print "<li class='nav-item'>";
                         //hipervínculo a /inventario/respaldo, con class condicionada
-                        print "<a href='".RUTA."respaldo' class='nav-link  ";
+                        print "<a href='".RUTA."RespaldoControlador' class='nav-link  ";
                         //si $datos['activo'] existe y no es NULL y $datos['activo'] es igual a "respaldo"
                         //agrega la class "active" a <a href=
                         if (isset($datos['activo']) && $datos['activo']=="respaldo") print "active";
