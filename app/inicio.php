@@ -15,11 +15,30 @@ define("TAMANO_PAGINA", 5);
 //paginador. cantidad máxima de números por paginador
 define("PAGINAS_MAXIMAS", 4);
 
-//Constantes para Tipos de Movimientos
+//Const tabla estadomovimientos
+define('ABIERTO',1);
+define('CERRADO',2);
+
+//Const tabla estadoproducto
+define('ACTIVO',1);
+define('INACTIVO',2);
+
+//Const tabla estadousuario
+define('USUARIO_ACTIVO',1);
+define('USUARIO_INACTIVO',2);
+define('USUARIO_SUSPENDIDO',3);
+
+//Const tabla tipomovimiento
+define('ORDEN',1);
+define('ENTRADA',2);
+define('DEVOLUCION',3);
+define('VENTA',4);
+
+//Const tabla tipousuario
 define('ADMON',1);
 define('VENDEDOR',2);
-define('CLIENTE',1);
-define('PROVEEDOR',1);
+define('CLIENTE',3);
+define('PROVEEDOR',4);
 
 //incluye, una sola vez, la class libs/Helper.php
 require_once("libs/Helper.php");
