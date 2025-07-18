@@ -2,8 +2,8 @@
 
 class UsuariosControlador extends Controlador 
 {
-    private $usuario = "";
-    private $modelo = "";
+    protected $usuario = "";
+    protected $modelo = "";
     private $sesion;
     
     function __construct()
@@ -35,16 +35,47 @@ class UsuariosControlador extends Controlador
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             //obtiene el id de POST o si viene vacio, le asigna ""
             $id = $_POST['id'] ?? "";
+
+            //aplica método cadena() a los valores obtenidos del POST, para sanitizar,
+            //por seguridad, antes de guardarlos en las tablas de la BD
+            $tipoUsuario = Helper::cadena($_POST['tipoUsuario'] ?? "");
+            $nombres = Helper::cadena($_POST['nombres'] ?? "");
+            $apellidos = Helper::cadena($_POST['apellidos'] ?? "");
+            $direccion = Helper::cadena($_POST['direccion'] ?? "");
+            $telefono = Helper::cadena($_POST['telefono'] ?? "");
+            $correo = Helper::cadena($_POST['correo'] ?? "");
+            $genero = Helper::cadena($_POST['genero'] ?? "");
+            
             //obtiene la pagina de POST o si viene vacio, le asigna "1"
             $pagina = $_POST['pagina'] ?? "1";
 
-            //aplica método cadena() a usuario del POST, para sanitizar, por seguridad, 
-            //antes de guardarlo en la tabla de la BD
-            $categoria = Helper::cadena($_POST['usuario'] ?? "");
+            //valida que no venga vacios los campos obligarorios del formulario
+            if ($tipoUsuario == "void") {
+                array_push($errores, "El tipo de Usuario es obligatorio");
+            }
+            if (empty($nombres)) {
+                array_push($errores, "El nombre del Usuario es obligatorio");
+            }
+            if (empty($apellidos)) {
+                array_push($errores, "El apellido del Usuario es obligatorio");
+            }
+            if (empty($correo)) {
+                array_push($errores, "El email del Usuario es obligatorio");
+            }
 
-            //valida que $pais no venga vacio del formulario
-            if (empty($categoria)) {
-                array_push($errores, "El nombre de la Categoría es obligatorio");
+            //valida si el correo NO tiene un formato válido
+            if (Helper::correo($correo) == false) {
+                array_push($errores, "Formato de correo no válido");
+            
+            //si el correo SI tiene un formato válido,
+            //busca el correo en la DB y si el resultado NO es false,
+            //significa que el correo ya existe en la DB
+            } else if ($this->modelo->getCorreo($correo) !=false) {
+                array_push($errores, "El Correo ya existe en la BD");
+            }
+
+            if ($genero == "void") {
+                array_push($errores, "Selecciona un género para el Usuario");
             }
 
             //valida si no hay errores de validación
@@ -52,31 +83,53 @@ class UsuariosControlador extends Controlador
                 //genera arreglo $data con la info del form
                 $data = [
                     "id" =>$id,
-                    "categoria" => $categoria
+                    "tipoUsuario" => $tipoUsuario,
+                    "nombres" => $nombres,
+                    "apellidos" => $apellidos,
+                    "direccion" => $direccion,
+                    "telefono" => $telefono,
+                    "correo" => $correo,
+                    "clave" => Helper::generarClave(10),
+                    "genero" => $genero,
+                    "estadoUsuario" => USUARIO_INACTIVO,
                 ];
 
                 //limpia los espacios en blanco de $id y valida si el valor de $id
                 //es una cadena vacia "", significa que el id no existe y podemos dar un alta nueva.
                 if (trim($id)==="") {
 
-                    //envia $data al método alta() del modelo y si retorna true
+                    //envia $data al método alta() del modelo y si retorna true:
                     if ($this->modelo->alta($data)) {
-                        //llama al método mensaje de Controlador, enviando arguementos, exito
-                        $this->mensaje(
-                            "Alta Categoría",
-                            "Alta de una nueva Categoría",
-                            "Se agregó correctamente la categoría: ".$categoria,
-                            "CategoriasControlador/".$pagina,
-                            "success"
-                        );
+                        //envia correo al usuario y si retorna true:
+                        if ($this->enviarCorreo($data["correo"])) {
+                            //llama al método mensaje de Controlador, enviando arguementos, éxito
+                            $this->mensaje(
+                                "Alta Usuario",
+                                "Alta de nuevo Usuario",
+                                "Se agregó correctamente el Usuario/a: ".$nombres." ".$apellidos,
+                                "UsuariosControlador/".$pagina,
+                                "success"
+                            );
+
+                        } else {
+                            //llama al método mensaje de Controlador, enviando argumentos de error
+                            $this->mensaje(
+                            "Error envio correo al Usuario",
+                            "Error al enviar el correo al Usuario",
+                            "Error al enviar el correo de confirmación al Usuario/a: ".$nombres." ".$apellidos,
+                            "UsuariosControlador/".$pagina,
+                            "danger"
+                            );
+                        }
+
                     // si el método alta() no ha retornado true  
                     } else {
                         //llama al método mensaje de Controlador, enviando argumentos de error
                         $this->mensaje(
-                            "Error Alta Categoría",
-                            "Error al agregar una nueva Categoría",
-                            "Error al agregar la nueva Categoría ".$categoria,
-                            "CategoriasControlador/".$pagina,
+                            "Error Alta Usuario",
+                            "Error al agregar un nuevo Usuario",
+                            "Error al agregar el Usuario/a: ".$nombres." ".$apellidos,
+                            "UsuariosControlador/".$pagina,
                             "danger"
                         );
                     }

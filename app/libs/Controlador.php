@@ -57,4 +57,38 @@ class Controlador
         exit;
     }
 
+    //Método envia correo con enlace para cambio de password y retorna true o false :bool
+    public function enviarCorreo(string $email='')
+    {
+        $data = [];
+
+        //valida si $email no contiene nada
+        if ($email=="") {
+            return false;
+        } else {
+            //busca el email en la DB y obtiene el registro del usuario
+            $data = $this->modelo->buscarCorreo($email);
+            //si $data no está vacio
+            if (!empty($data)) {
+                //encripta el id, del usuario obtenido $data
+                $id = Helper::encriptar($data["id"]);
+                
+                $msg = "Pulsa en el enlace para cambiar tu clasve de acceso al sistema<br>";
+                $msg.= "<a href='" . RUTA . "LoginControlador/cambiarClave/".$id."'>Cambiar clave de acceso</a>";
+                
+                $headers = "MIME-Version: 1.0\r\n";
+                $headers = "Content-type:text/html; charset=UTF-8\r\n";
+                $headers = "From: Inventario\r\n";
+                $headers = "Reply-to: ayuda@inventario.com\r\n";
+                
+                $asunto = "Cambiar clave de acceso";
+                
+                //debuguear($id);
+                Helper::mostrar($msg);
+                //return true;
+                return @mail($email, $asunto, $msg, $headers);
+            }
+        }
+    }
+
 }

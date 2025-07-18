@@ -13,16 +13,38 @@ class UsuariosModelo
     //agrega nuevo registro categoria a la tabla categorias de la BD
     public function alta($data='')
     {
-        //definición de sentencia SQL para insertar un nuevo pais
+        //definición de sentencia SQL para insertar un nuevo usuario
         $sql = "INSERT INTO usuarios VALUES(0,";      //1. id
-        $sql.= "'".$data['usuario']."', ";             //2. usuario
-        $sql.= "0, ";                               //3. baja
-        $sql.= "NOW(), ";                           //4. fecha alta
-        $sql.= "'', ";                              //5. fecha baja
-        $sql.= "'')";                              //6. fecha cambio
+        $sql.= "'".$data['tipoUsuario']."', ";        //2. tipoUsuario
+        $sql.= "'".$data['nombres']."', ";            //3. nombres
+        $sql.= "'".$data['apellidos']."', ";          //4. apellidos
+        $sql.= "'".$data['direccion']."', ";          //5. direccion
+        $sql.= "'".$data['telefono']."', ";           //6. telefono
+        $sql.= "'".$data['correo']."', ";             //7. correo
+        $sql.= "'".$data['clave']."', ";              //8. clave
+        $sql.= "'".$data['genero']."', ";             //9. genero
+        $sql.= "'".$data['estadoUsuario']."', ";      //10. estadoUsuario
+        $sql.= "0, ";                                 //11. baja
+        $sql.= "'', ";                                //12. fecha login
+        $sql.= "NOW(), ";                             //13. fecha alta
+        $sql.= "'', ";                                //14. fecha baja
+        $sql.= "'')";                                 //15. fecha cambio
 
         //llama método queryNoSelect() enviando $sql y retorna el resultado
         return $this->db->queryNoSelect($sql);
+    }
+
+    //buaca si el usuario (email) recibido existe ne la BD, retorna :array
+    public function buscarCorreo( string $usuario='') :array
+    {
+        //valida si el usuario email viene vacio, retorna false
+        if (empty($usuario)) return [];
+        
+        //define la consulta SQL para el query()
+        $sql = "SELECT id, tipoUsuario, nombres, apellidos, direccion, telefono, correo, clave, genero, estadoUsuario FROM usuarios WHERE baja=0 AND correo='".$usuario."'";
+        //llama al método query de la class MySQLdb, enviando la consulta sql
+        //y retorna la respuesta.
+        return $this->db->query($sql);
     }
 
     //actualiza la columna baja y baja_dt del registro pais, según su id
@@ -78,6 +100,16 @@ class UsuariosModelo
         if (empty($id)) return false;
         //define la sentencia SQL para el query
         $sql = "SELECT id, usuario FROM usuarios WHERE id='".$id."'";
+        //hace la consulta query a la db y retorna a PDOStatement object, or FALSE si falla.
+        return $this->db->query($sql);
+    }
+
+        //obtiene un registro de la tabla paises, por us id
+    public function getCorreo($correo='')
+    {
+        if (empty($correo)) return false;
+        //define la sentencia SQL para el query
+        $sql = "SELECT id FROM usuarios WHERE correo='".$correo."' AND baja=0";
         //hace la consulta query a la db y retorna a PDOStatement object, or FALSE si falla.
         return $this->db->query($sql);
     }

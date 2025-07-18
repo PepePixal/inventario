@@ -21,19 +21,14 @@ class Helper
         return $cadena;
     }
 
-    //con static podemos llamar la función (nom_class::nom_funcion()),
-    //sin necesidad de crear una nueva instancia de su class.
-    // Requiere argumentos  
-    public static function mostrar($data = '', $detener = true)
+    //filtra y valida el contenido del parámetro recibido,
+    //retorna el valor filtrado o FALSE, si no pasa la validación
+    public static function correo($correo='')
     {
-        print "<pre>";
-        //muestra la información, estructurada, de la variable
-        var_dump($data);
-        print "<pre>";
-        if ($detener) {
-            exit;
-        }
+        return filter_var($correo, FILTER_VALIDATE_EMAIL);
     }
+
+
 
     //** encriptación básica y desencriptación */
 
@@ -67,6 +62,35 @@ class Helper
 
         //retorna la cadena original antes de codificar
         return $cadena;
+    }
+
+    //gernera clave aleatoria, requiere longitud deseada, retorna string
+    public static function generarClave($lon)
+    {
+        $llave = "";
+        $cadena = "1234567890ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvxyz+*-_";
+        $max = strlen($cadena)-1;
+        for ($i = 0; $i < $lon; $i++) {
+            //en cada ciclo del for: mt_rand() genera un número entero aleatorio, con longitud entre 0 y $max,
+            //substr() retorna un trozo del string ($cadena), a partir de la posición indicada por el valor de mt_rand()
+            //y con una longitud indicada en el parámetro 1, .= para concatenar las condiciones de substr()
+            $llave .= substr($cadena, mt_rand(0, $max), 1);
+        }
+        return $llave;
+    }
+
+    //con static podemos llamar la función (nom_class::nom_funcion()),
+    //sin necesidad de crear una nueva instancia de su class.
+    // Requiere argumentos  
+    public static function mostrar($data = '', $detener = true)
+    {
+        print "<pre>";
+        //muestra la información, estructurada, de la variable
+        var_dump($data);
+        print "<pre>";
+        if ($detener) {
+            exit;
+        }
     }
 
 }
