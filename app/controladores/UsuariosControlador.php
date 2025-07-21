@@ -67,10 +67,11 @@ class UsuariosControlador extends Controlador
             if (Helper::correo($correo) == false) {
                 array_push($errores, "Formato de correo no válido");
             
-            //si el correo SI tiene un formato válido,
-            //busca el correo en la DB y si el resultado NO es false,
-            //significa que el correo ya existe en la DB
-            } else if ($this->modelo->getCorreo($correo) !=false) {
+            //como el correo SI tiene un formato válido,
+            //primero valida si el $id viene vacio (viene de alta de usuario) y 
+            //si el correo ya exste en la BD.
+            //Si el $id NO viene vacio, viene de una modificación, salta esta validación
+            } else if (trim($id) === "" && $this->modelo->getCorreo($correo) !=false) {
                 array_push($errores, "El Correo ya existe en la BD");
             }
 
@@ -141,10 +142,10 @@ class UsuariosControlador extends Controlador
                     if ($this->modelo->modificar($data)) {
                         //llama método para mensaje de exito
                         $this->mensaje(
-                            "Modificar Categoría",
-                            "Modificar nombre de la Categoría",
-                            "Se modificó orrectamente la Categoría: ".$categoria,
-                            "CategoriasControlador/".$pagina,
+                            "Modificar Usuario",
+                            "Modificar el Usuario",
+                            "Se modificó correctamente el Usuario: ".$nombres." ".$apellidos,
+                            "UsuariosControlador/".$pagina,
                             "success"
                         );
                     
@@ -152,10 +153,10 @@ class UsuariosControlador extends Controlador
                     } else {
                         //llama método para mensaje de error
                         $this->mensaje(
-                            "Modificar Categoría",
-                            "Modificar nombre de la Categoría",
-                            "Error al modificar la Categoría: ".$categoria,
-                            "CategoriasControlador/".$pagina,
+                            "Modificar Usuario",
+                            "Modificar el Usuario",
+                            "Error al modificar el Usuario: ".$nombres." ".$apellidos,
+                            "UsuariosControlador/".$pagina,
                             "danger"
                         );
                     }
@@ -201,10 +202,10 @@ class UsuariosControlador extends Controlador
             if ($this->modelo->bajaLogica($id)) {
                 //llama mensaje de exito
                 $this->mensaje(
-                    "Eliminar la Categoría",
-                    "Eliminar la Categoría",
-                    "Se eliminó correctamente la categoría",
-                    "CategoriasControlador/".$pagina,
+                    "Eliminar Usuario",
+                    "Eliminar el Usuario",
+                    "Se eliminó correctamente el Usuario: ".$id,
+                    "UsuariosControlador/".$pagina,
                     "success"
                 );
 
@@ -212,10 +213,10 @@ class UsuariosControlador extends Controlador
             } else {
                 //llama mensaje de error
                 $this->mensaje(
-                    "Eliminar Categoría",
-                    "Eliminar la Categoría",
-                    "Hubo un error al 'eliminar' la Categoría",
-                    "CategoriasControlador/".$pagina,
+                    "Eliminar Usuario",
+                    "Eliminar el Usuario",
+                    "Hubo un error al 'eliminar' el Usuario".$id,
+                    "UsuariosControlador/".$pagina,
                     "danger"
                 );
             }
@@ -264,24 +265,33 @@ class UsuariosControlador extends Controlador
     //Borrado lógico, asignando el estado de baja al registro pais, según su id.
     public function eliminar($id="", $pagina="1")
     {
-        //obtinene el registro pais, según su id
+        //obtinene el registro usuario, según su id
         $data = $this->modelo->getId($id);
+
+        //obtine valores de las tablas relacionadas con usuario,
+        //para ofrecerlos en los secet del form alta/modificarion de usuario
+        $tiposUsuarios = $this->modelo->getTiposUsuarios();
+        $generos = $this->modelo->getGeneros();
+        $estadosUsuarios = $this->modelo->getEstadosUsuarios(); 
 
         //arreglo con datos para enviar a la vista, una vez obtenida la $data de la BD
         $datos = [
-            "titulo" => "Eliminar Categoría",
-            "subtitulo" => "Eliminar la Categoría",
-            "activo" => "categorias",
+            "titulo" => "Eliminar Usuario",
+            "subtitulo" => "Eliminar el Usuario",
+            "activo" => "usuarios",
             "admon" => true,
             "menu" => true,
             "errores" => [],
-            "data" => $data,
             "pagina" => $pagina,
+            "tiposUsuarios" => $tiposUsuarios,
+            "estadosUsuarios" => $estadosUsuarios,
+            "generos" => $generos,
+            "data" => $data,
             "baja" => true
         ];
 
         //llama método vista para mostrar el registro obtenido
-        $this->vista("categoriasAltaVista", $datos);
+        $this->vista("usuariosAltaVista", $datos);
     }
 
     //modificar el país por su id
@@ -290,19 +300,29 @@ class UsuariosControlador extends Controlador
         //obtener registro de la tabla por su id con el método getId() en modelo
         $data = $this->modelo->getId($id);
 
+        //obtine valores de las tablas relacionadas con usuario,
+        //para ofrecerlos en los secet del form alta/modificarion de usuario
+        $tiposUsuarios = $this->modelo->getTiposUsuarios();
+        $generos = $this->modelo->getGeneros();
+        $estadosUsuarios = $this->modelo->getEstadosUsuarios(); 
+
+
         //arreglo con datos para enviar a la vista, una vez obtenida la $data de la BD
         $datos = [
-            "titulo" => "Modificar Categoría",
-            "subtitulo" => "Modificar Categoría",
-            "activo" => "categorias",
+            "titulo" => "Modificar Usuario",
+            "subtitulo" => "Modificar un Usuario",
+            "activo" => "usuarios",
             "admon" => true,
             "menu" => true,
             "pagina" => $pagina,
+            "tiposUsuarios" => $tiposUsuarios,
+            "estadosUsuarios" => $estadosUsuarios,
+            "generos" => $generos,
             "data" => $data
         ];
 
         //llema método vista() enviando atributos
-        $this->vista("categoriasAltaVista", $datos);
+        $this->vista("usuariosAltaVista", $datos);
     }
 }
 ?>

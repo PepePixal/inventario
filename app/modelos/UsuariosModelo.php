@@ -94,12 +94,13 @@ class UsuariosModelo
         return $this->db->querySelect($sql);
     }
 
-    //obtiene un registro de la tabla paises, por us id
+    //obtiene los campos del registro de la tabla paises, por us id,
+    //retorna un arreglo idexado y asoc, con los campos
     public function getId($id='')
     {
         if (empty($id)) return false;
         //define la sentencia SQL para el query
-        $sql = "SELECT id, usuario FROM usuarios WHERE id='".$id."'";
+        $sql = "SELECT id, tipoUsuario, nombres, apellidos, direccion, telefono, correo, clave, genero, estadoUsuario FROM usuarios WHERE id='".$id."' AND baja=0";
         //hace la consulta query a la db y retorna a PDOStatement object, or FALSE si falla.
         return $this->db->query($sql);
     }
@@ -145,9 +146,18 @@ class UsuariosModelo
         if (!empty($data["id"])) {
             //define la instrucción SQL que enviará al query
             $sql = "UPDATE usuarios SET ";
-            $sql.= "usuario='".$data['usuario']."', ";
+            $sql.= "tipoUsuario='".$data['tipoUsuario']."', ";
+            $sql.= "nombres='".$data['nombres']."', ";
+            $sql.= "apellidos='".$data['apellidos']."', ";
+            $sql.= "direccion='".$data['direccion']."', ";
+            $sql.= "telefono='".$data['telefono']."', ";
+            $sql.= "correo='".$data['correo']."', ";
+            $sql.= "genero='".$data['genero']."', ";
             $sql.= "cambio_dt=(NOW()) ";
             $sql.= "WHERE id=".$data['id'];
+
+            //en la modificación no enviamos ni la clave ni el estadoUsuario,
+            //para que no se cambien en la DB
 
             //llama metodo queryNoSelect() enviando $sql y asigna el result a $salida
             $salida = $this->db->queryNoSelect($sql);

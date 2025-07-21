@@ -35,7 +35,7 @@
 
                 //si la var "tipoUsuario", que viene de modificar() o de bajaLogica(), es igual a id del tipoUsuarios del select,
                 //asígnale selected para que se muestre como seleccionada
-                if(isset($datos["data"]["tipoUsuario"]) && $datos["data"]["tiposUsuario"] == $datos["tiposUsuarios"][$i]["id"]) {
+                if(isset($datos["data"]["tipoUsuario"]) && $datos["data"]["tipoUsuario"] == $datos["tiposUsuarios"][$i]["id"]) {
                     print " selected ";
                 }
                 
@@ -142,10 +142,12 @@
             <p class="mt-3 text-danger"><b>Una vez eliminado el Usuario, no se podrá recuperar</b></p>
             
             <!-- si NO se ha recibido baja, desde vista, muestra el input Enviar país y botón Volver-->
-            <?php } else { ?>
+        <?php } else { ?>
 
-            <input type="submit" value="Enviar Usuario" class="btn btn-success mt-3 me-2 "> 
-            <a href="<?php print RUTA;?>UsuariosControlador" class="btn btn-secondary mt-3 "><- Volver</a>
+            <input type="submit" value="Enviar Usuario" class="btn btn-success mt-3 me-2 ">
+             
+            <a href="<?php print RUTA;?>UsuariosControlador" class="btn btn-secondary mt-3 "><- Tornar</a>
+
         <?php } ?>
     </div>
 </form>
