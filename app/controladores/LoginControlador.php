@@ -228,9 +228,9 @@ class LoginControlador extends Controlador
             //si el checkbox recordar está en on, para recordar el usuario y la contraseña de la sesión:
             if ($recordar == "on") {
                 //time() retorna (unix time), la cantidad de segundos transcurridos desde el 1/1/1970 hasta hoy,
-                //si le suman los segundos que tiene una semana (60*60*24*7), se obtiene tenemos la cantidad de segundos
+                //si le suman los segundos que tiene una semana (60*60*24*7), se obtiene la cantidad total de segundos
                 //hasta una semana posterior a hoy. Esta cantidad de segundos se usará para indicar el tiempo de validez
-                //de las cookies que generemos. Las cookies caduran al cabo de una semana de haber sido generadas.
+                //de las cookies que generemos. Las cookies caducaran al cabo de una semana de haber sido generadas.
                 $fecha = time() + (60*60*24*7);
             } else {
                 //obtiene una fecha, en segundos, expirada por un segundo
@@ -247,13 +247,13 @@ class LoginControlador extends Controlador
             if (empty($usuario)) {
                 array_push($errores, "El Usuario (email) es obligatorio");
             }
+            if (empty($clave)) {
+                array_push($errores, "La Contraseña es obligatoria");
+            }
             //valida si el filtrado del formato del email NO es correcto
             if (filter_var($usuario, FILTER_VALIDATE_EMAIL) == false) {
                 //agrega error al arreglo $errores
                 array_push($errores, "El formato del correo No es válido");
-            }
-            if (empty($clave)) {
-                array_push($errores, "La Contraseña es obligatoria");
             }
 
             //si NO hay errores de validación de los datos del form
@@ -262,20 +262,55 @@ class LoginControlador extends Controlador
                 //hash_hmac() requiere: "algoridmo", "clave a hashear (string)", "clave secreta (string)"
                 $clave = hash_hmac("sha512", $clave, CLAVE);
 
-                //busca el correo (usuario) en la DB
+                //busca el correo (usuario) en la DB y obtiene sus datos
                 $data = $this->modelo->buscarCorreo($usuario);
 
                 //valida si data contiene algo y si la clave de la DB es igual a la del form
                 if ($data && $data['clave'] == $clave) {
-                    
-                    //inicia sesión, nueva instancia de class Sesión() y asigna el objto a $sesion
-                    $this->sesion = new Sesion();
+                    //** Usuario Logueado */
 
-                    //método que asigna el usuario enviado en $data al $_SESSION['usuario']
-                    $this->sesion->iniciarLogin($data);
+                    //obtiene el estado del usuario (1 activo, 2 inactivo, 3 suspendido)
+                    $estadoUsuario = $data["estadoUsuario"];
+                    //obtiene el tipo de usuario (1 admin, 2 vendedor, 3 cliente, 4 proveedor)
+                    $tipoUsuario = $data["tipoUsuario"];
 
-                    //redirige a la ruta url inventario/TableroControlador/    
-                    header('Location:'.RUTA."TableroControlador");
+                    //valida SI el estado del usuario es activo (1 const USUARIO_ACTIVO)
+                    if ($estadoUsuario == USUARIO_ACTIVO) {
+
+                        //valida si el tipo de usuario es Administrador (1 const ADMON)
+                        if ($tipoUsuario == ADMON) {
+                            //actualiza la fecha de login (login_dt) en la DB, enviando el id
+                            $this->modelo->actualizarLogin($data["id"]);
+
+                            //inicia sesión, nueva instancia de class Sesión() y asigna el objto a sesion
+                            $this->sesion = new Sesion();
+        
+                            //método que asigna el usuario recibido en $data, al $_SESSION['usuario']
+                            $this->sesion->iniciarLogin($data);
+        
+                            //redirige a la ruta url inventario/TableroControlador/    
+                            header('Location:'.RUTA."TableroControlador");
+
+                        } else if ($tipoUsuario == VENDEDOR) {
+                            debuguear("Bienvenido Vendedor");
+                        } else if ($tipoUsuario == CLIENTE) {
+                            debuguear("Bienvenido Cliente");
+                        } else if ($tipoUsuario == PROVEEDOR) {
+                            debuguear("Bienvenido Proveedor");
+                        }
+
+                    // el usuario no está activo
+                    } else {
+                        //llama método mensaje, enviando datos
+                        $this->mensaje(
+                        "Error acceso",
+                        "Error de acceso",
+                        "El usuario NO está Activo. Consulta con el administrador",
+                        "LoginController",
+                        "danger"
+                );
+                    }
+                   
                 }
                 
                 //llama método mensaje, enviando datos

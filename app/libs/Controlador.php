@@ -86,7 +86,7 @@ class Controlador
                 //debuguear($id);
                 Helper::mostrar($msg);
                 //return true;
-                return @mail($email, $asunto, $msg, $headers);
+                //return @mail($email, $asunto, $msg, $headers);
             }
         }
     }
