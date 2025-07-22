@@ -262,11 +262,12 @@ class LoginControlador extends Controlador
                 //hash_hmac() requiere: "algoridmo", "clave a hashear (string)", "clave secreta (string)"
                 $clave = hash_hmac("sha512", $clave, CLAVE);
 
-                //busca el correo (usuario) en la DB y obtiene sus datos
+                //busca el correo (usuario) en la DB y obtiene los datos del usuario
                 $data = $this->modelo->buscarCorreo($usuario);
 
-                //valida si data contiene algo y si la clave de la DB es igual a la del form
+                //valida si data contiene algo y si la clave de la DB es igual a la del form hasheada
                 if ($data && $data['clave'] == $clave) {
+
                     //** Usuario Logueado */
 
                     //obtiene el estado del usuario (1 activo, 2 inactivo, 3 suspendido)
@@ -284,8 +285,8 @@ class LoginControlador extends Controlador
 
                             //inicia sesión, nueva instancia de class Sesión() y asigna el objto a sesion
                             $this->sesion = new Sesion();
-        
-                            //método que asigna el usuario recibido en $data, al $_SESSION['usuario']
+
+                            //asigna el usuario enviado en $data, al $_SESSION['usuario'] y activa login true
                             $this->sesion->iniciarLogin($data);
         
                             //redirige a la ruta url inventario/TableroControlador/    
@@ -308,7 +309,7 @@ class LoginControlador extends Controlador
                         "El usuario NO está Activo. Consulta con el administrador",
                         "LoginController",
                         "danger"
-                );
+                        );
                     }
                    
                 }

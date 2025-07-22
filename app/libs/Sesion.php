@@ -6,12 +6,15 @@ class Sesion
 
     function __construct()
     {
-        //inicia la session
+        //inicia la session, inicializando la session data
         session_start();
+
         //valida si el 'usuario' esta en la sper glob $_SESSION y no es NULL
         if(isset($_SESSION['usuario'])) {
+
             //obtiene el usuario de la $_SESSION
             $this->usuario = $_SESSION['usuario'];
+
             //activa banderita login true
             $this->login = true;
         
@@ -30,6 +33,7 @@ class Sesion
         if ($usuario) {
             //asigna el $usuario recibido al usuario de la $_SESSION iniciada y al atributo usuario
             $this->usuario = $_SESSION['usuario'] = $usuario;
+
             //activa banderita login
             $this->login = true;
         }
