@@ -3,6 +3,14 @@
 class Helper
 {
 
+    //sanitiza y limpia el nombre de un archivo, para php antes grabarlo en la DB
+    public static function archivo($cadena) {
+        $buscar =      array(' ', '*','!', '@', '?', 'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ü', 'Ü', '¿', '¡');
+        $reemplazar =  array('-', '', '', '', '', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N', 'u', 'U', '', '');
+        $cadena = str_replace($buscar, $reemplazar, $cadena);
+        return $cadena;
+    }
+
     //revisa y sanitiza una cadena de texto, antes de agregarla a la BD
     public static function cadena($cadena)
     {
@@ -27,7 +35,6 @@ class Helper
     {
         return filter_var($correo, FILTER_VALIDATE_EMAIL);
     }
-
 
 
     //** encriptación básica y desencriptación */
@@ -91,6 +98,16 @@ class Helper
         if ($detener) {
             exit;
         }
+    }
+
+    //limpia un número string, eliminando espacios, símbolos $, €, y . de millares
+    public static function numero($cadena) {
+        //define los signos a buscar y con los que reemplazar
+        $buscar = array(' ', '$', '€','.');
+        $reemplazar = array('', '', '','');
+        //reemplaza los carácteres de $buscar por los de $reemplazar, en la $cadena recibida
+        $numero = str_replace($buscar, $reemplazar, $cadena);
+        return $numero;
     }
 
 }
