@@ -17,7 +17,7 @@
 ?>
 
 <!-- enctype="multipart/form-data" para poder subir archivos, fotos, a traves del form -->
-<form action="<?php print RUTA?>ProductosControlador/alta/" method="POST" enctype="multipart/form-data"
+<form action="<?php print RUTA?>ProductosControlador/alta/" method="POST" enctype="multipart/form-data">
     
     <div class="form-group text-start mt-2">
         <label for="idCategoria">* Categoría:</label>
@@ -46,7 +46,6 @@
         ?>
         </select>
     </div>
-
 
     <div class="form-group text-start mt-2">
         <label for="nombre">* Nombre:</label>

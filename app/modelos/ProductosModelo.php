@@ -96,13 +96,13 @@ class ProductosModelo
         return $this->db->querySelect($sql);
     }
 
-    //obtiene los campos del registro de la tabla paises, por us id,
+    //obtiene los campos del registro de la tabla productos, por us id,
     //retorna un arreglo idexado y asoc, con los campos
     public function getId($id='')
     {
         if (empty($id)) return false;
         //define la sentencia SQL para el query
-        $sql = "SELECT id, tipoUsuario, nombres, apellidos, direccion, telefono, correo, clave, genero, estadoUsuario FROM productos WHERE id='".$id."' AND baja=0";
+        $sql = "SELECT id, nombre, descripcion, precio, foto, ubicacion, iva, maximo, minimo, stock, comentario, idProveedor, idCategoria FROM productos WHERE id='".$id."' AND baja=0";
         //hace la consulta query a la db y retorna a PDOStatement object, or FALSE si falla.
         return $this->db->query($sql);
     }
@@ -128,18 +128,19 @@ class ProductosModelo
         if (!empty($data["id"])) {
             //define la instrucción SQL que enviará al query
             $sql = "UPDATE productos SET ";
-            $sql.= "tipoUsuario='".$data['tipoUsuario']."', ";
-            $sql.= "nombres='".$data['nombres']."', ";
-            $sql.= "apellidos='".$data['apellidos']."', ";
-            $sql.= "direccion='".$data['direccion']."', ";
-            $sql.= "telefono='".$data['telefono']."', ";
-            $sql.= "correo='".$data['correo']."', ";
-            $sql.= "genero='".$data['genero']."', ";
+            $sql.= "nombre='".$data['nombre']."', ";
+            $sql.= "descripcion='".$data['descripcion']."', ";
+            $sql.= "precio='".$data['precio']."', ";
+            $sql.= "foto='".$data['foto']."', ";
+            $sql.= "ubicacion='".$data['ubicacion']."', ";
+            $sql.= "iva='".$data['iva']."', ";
+            $sql.= "maximo='".$data['maximo']."', ";
+            $sql.= "minimo='".$data['minimo']."', ";
+            $sql.= "comentario='".$data['comentario']."', ";
+            $sql.= "idProveedor='".$data['idProveedor']."', ";
+            $sql.= "idCategoria='".$data['idCategoria']."', ";
             $sql.= "cambio_dt=(NOW()) ";
             $sql.= "WHERE id=".$data['id'];
-
-            //en la modificación no enviamos ni la clave ni el estadoUsuario,
-            //para que no se cambien en la DB
 
             //llama metodo queryNoSelect() enviando $sql y asigna el result a $salida
             $salida = $this->db->queryNoSelect($sql);

@@ -87,7 +87,6 @@ class ProductosControlador extends Controlador
                     "idProveedor" => $idProveedor,
                     "idCategoria" => $idCategoria,
                 ];
-                
                 //limpia los espacios en blanco de $id y valida si el valor de $id
                 //es una cadena vacia "", significa que el id no existe y podemos dar un alta nueva.
                 if (trim($id)==="") {
@@ -98,9 +97,10 @@ class ProductosControlador extends Controlador
                     //valida si el $id resultado de alta(), NO está vacio de info
                     if ($id != "") {
                         //define array con los tipos de archivos que puede subir por el form
-                        $tipos_array = ["image/jpeg", "image/gif", "image/png"];
+                        $tipos_array = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
                         
-                        //valida si en el array super glob $_FILES, viene 'fotos'
+                        //valida si en el array super glob $_FILES, contiene el arreglo [`fotos`]
+                        //(si no se ha subido foto el arreglo ['fotos'] viene pero vacio)
                         if ($_FILES['fotos']) {
                             //define var con el nombre de la carpeta a crear para las fotos de productos,
                             //el nombre es fotos/el id del último registro insertado/
@@ -128,7 +128,6 @@ class ProductosControlador extends Controlador
                                     //lo asigna el elemento a la llave $key de un arreglo asoc,
                                     //dentro del un arreglo index por cada archivo $i
                                     $archivos_array[$i][$key] = $_FILES['fotos'][$key][$i];
-
                                 }
                             }
                             
@@ -160,7 +159,7 @@ class ProductosControlador extends Controlador
                                 }
                             }
                         } 
-                        
+
                         //valida si no hay errores en el arreglo $errores, tras la comprobación de los archivos
                         if (count($errores) == 0) {
                             $this->mensaje(
@@ -172,7 +171,6 @@ class ProductosControlador extends Controlador
                             );
                         }
 
-
                     //el $id, resultado de alta(), está vacio de info
                     } else {
                         //llama al método mensaje de Controlador, enviando argumentos de error
@@ -180,7 +178,7 @@ class ProductosControlador extends Controlador
                             "Error Alta Producto",
                             "Error al agregar un nuevo Producto",
                             "Error al agregar el Producto: ".$nombre,
-                            "UsuariosControlador/".$pagina,
+                            "ProductosControlador/".$pagina,
                             "danger"
                         );
                     }
@@ -192,10 +190,10 @@ class ProductosControlador extends Controlador
                     if ($this->modelo->modificar($data)) {
                         //llama método para mensaje de exito
                         $this->mensaje(
-                            "Modificar Usuario",
-                            "Modificar el Usuario",
-                            "Se modificó correctamente el Usuario: ".$nombres." ".$apellidos,
-                            "UsuariosControlador/".$pagina,
+                            "Modificar Producto",
+                            "Modificar el Producto",
+                            "Se modificó correctamente el Producto: ".$nombre,
+                            "ProductosControlador/".$pagina,
                             "success"
                         );
                     
@@ -203,10 +201,10 @@ class ProductosControlador extends Controlador
                     } else {
                         //llama método para mensaje de error
                         $this->mensaje(
-                            "Modificar Usuario",
-                            "Modificar el Usuario",
-                            "Error al modificar el Usuario: ".$nombres." ".$apellidos,
-                            "UsuariosControlador/".$pagina,
+                            "Modificar Producto",
+                            "Modificar el Producto",
+                            "Error al modificar el Producto: ".$nombre,
+                            "ProductosControlador/".$pagina,
                             "danger"
                         );
                     }
@@ -372,29 +370,26 @@ class ProductosControlador extends Controlador
         //obtener registro de la tabla por su id con el método getId() en modelo
         $data = $this->modelo->getId($id);
 
-        //obtine valores de las tablas relacionadas con usuario,
-        //para ofrecerlos en los secet del form alta/modificarion de usuario
-        $tiposUsuarios = $this->modelo->getTiposUsuarios();
-        $generos = $this->modelo->getGeneros();
-        $estadosUsuarios = $this->modelo->getEstadosUsuarios(); 
-
+        //obtine valores de las tablas (catalogos) relacionadas con productos,
+        //para ofrecerlos en los secet del form alta usuario
+        $proveedores = $this->modelo->getProveedores();
+        $categorias = $this->modelo->getCategorias(); 
 
         //arreglo con datos para enviar a la vista, una vez obtenida la $data de la BD
         $datos = [
-            "titulo" => "Modificar Usuario",
-            "subtitulo" => "Modificar un Usuario",
-            "activo" => "usuarios",
+            "titulo" => "Modificar Producto",
+            "subtitulo" => "Modificar un Producto",
+            "activo" => "productos",
             "admon" => true,
             "menu" => true,
             "pagina" => $pagina,
-            "tiposUsuarios" => $tiposUsuarios,
-            "estadosUsuarios" => $estadosUsuarios,
-            "generos" => $generos,
+            "proveedores" => $proveedores,
+            "categorias" => $categorias,
             "data" => $data
         ];
 
         //llema método vista() enviando atributos
-        $this->vista("usuariosAltaVista", $datos);
+        $this->vista("productosAltaVista", $datos);
     }
 }
 ?>
