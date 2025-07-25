@@ -263,7 +263,7 @@ class ProductosControlador extends Controlador
         }
     }
 
-    //activa la columna baja del registro pais, según el id
+    //activa la columna baja del registro producto, según el id
     public function bajaLogica($id='', $pagina="1")
     {
         //valida si el id está definido no es NULL y no está vacio
@@ -272,10 +272,10 @@ class ProductosControlador extends Controlador
             if ($this->modelo->bajaLogica($id)) {
                 //llama mensaje de exito
                 $this->mensaje(
-                    "Eliminar Usuario",
-                    "Eliminar el Usuario",
-                    "Se eliminó correctamente el Usuario: ".$id,
-                    "UsuariosControlador/".$pagina,
+                    "Eliminar Producto",
+                    "Eliminar el Producto",
+                    "Se eliminó correctamente el Producto: ".$id,
+                    "ProductosControlador/".$pagina,
                     "success"
                 );
 
@@ -283,13 +283,87 @@ class ProductosControlador extends Controlador
             } else {
                 //llama mensaje de error
                 $this->mensaje(
-                    "Eliminar Usuario",
-                    "Eliminar el Usuario",
-                    "Hubo un error al 'eliminar' el Usuario".$id,
-                    "UsuariosControlador/".$pagina,
+                    "Eliminar Producto",
+                    "Eliminar el Producto",
+                    "Hubo un error al 'eliminar' el Producto".$id,
+                    "ProductosControlador/".$pagina,
                     "danger"
                 );
             }
+        }
+    }
+
+    //recibe id del producto, el índice del arreglo del nombre del archivo (foto) y la página
+    public function borrarImagen($id="",$i="",$pagina="1")
+    {
+        //define la url relativa (php) de la carpeta donde están los archivos (fotos)
+        $carpeta = "fotos/".$id."/";
+        //define var $foto
+        $foto = "";
+        //valida si la carpeta existe
+        if (file_exists($carpeta)) {
+            //obtiene un array indexado con los directorios relativos (php) hasta la carpeta en $carpeta y
+            //los archivos que contiene ([0]=>"." [1]=>".." [2]=>"nom_archivo1" [3]=>"nom_archivo2" etc)
+            $archivos_array = scandir($carpeta);
+            //define el directorio y el nombre del archivo (foto) a borrar
+            $foto = $carpeta.$archivos_array[$i];
+        } else {
+            $archivos_array = [];
+        }
+        //llama método mensaje() einviando parámetros
+        $this->mensaje(
+            "Eliminar Imagen",
+            "Eliminar foto de Producto",
+            "Una vez eliminada la foto '".$archivos_array[$i]."' no podrá ser recuperada",
+            "ProductosControlador/".$pagina,
+            "danger",
+            "ProductosControlador/borrarArchivo/".$id."/".$i."/".$pagina,
+            "danger",
+            "Borrar"
+        );
+    }
+
+    public function borrarArchivo($id,$i,$pagina)
+    {
+        //define la url relativa (php) de la carpeta donde están los archivos (fotos)
+        $carpeta = "fotos/".$id."/";
+        //define var $foto
+        $foto = "";
+        $salida = false;
+         //valida si la carpeta existe
+        if (file_exists($carpeta)) {
+            //obtiene un array indexado con los directorios relativos (php) hasta la carpeta en $carpeta y
+            //los archivos que contiene ([0]=>"." [1]=>".." [2]=>"nom_archivo1" [3]=>"nom_archivo2" etc)
+            $archivos_array = scandir($carpeta);
+            //define el directorio y el nombre del archivo (foto) a borrar
+            $foto = $carpeta.$archivos_array[$i];
+            //valida si existe el archivo foto
+            if (file_exists($foto)){
+                //elimina el archivo (foto)
+                //unlink($foto)
+                $salida = true;
+            }
+        }
+
+        //si $salida es true, se ha borrado el archivo (foto)
+        if ($salida) {
+            //llama método mensaje()
+            $this->mensaje(
+                "Borrar imagen",
+                "Borrar una imagen de producto",
+                "Se borró correctamente la imagen: ".$foto,
+                "ProductosControlador/".$pagina,
+                "success"
+            );
+        } else {
+           //llama método mensaje()
+            $this->mensaje(
+                "Borrar imagen",
+                "Borrar una imagen de producto",
+                "Error al borrar la imagen: ".$foto,
+                "ProductosControlador/".$pagina,
+                "danger"
+            );
         }
     }
 
@@ -332,39 +406,37 @@ class ProductosControlador extends Controlador
     }
 
 
-    //Borrado lógico, asignando el estado de baja al registro pais, según su id.
+    //Borrado lógico, asignando el estado de baja al registro producto, según su id.
     public function eliminar($id="", $pagina="1")
     {
         //obtinene el registro usuario, según su id
         $data = $this->modelo->getId($id);
 
-        //obtine valores de las tablas relacionadas con usuario,
-        //para ofrecerlos en los secet del form alta/modificarion de usuario
-        $tiposUsuarios = $this->modelo->getTiposUsuarios();
-        $generos = $this->modelo->getGeneros();
-        $estadosUsuarios = $this->modelo->getEstadosUsuarios(); 
+        //obtine valores de las tablas relacionadas con productos,
+        //para imprimirlor en los secet del form procductosAltaVista de productos
+        $proveedores = $this->modelo->getProveedores();
+        $categorias = $this->modelo->getCategorias(); 
 
         //arreglo con datos para enviar a la vista, una vez obtenida la $data de la BD
         $datos = [
-            "titulo" => "Eliminar Usuario",
-            "subtitulo" => "Eliminar el Usuario",
-            "activo" => "usuarios",
+            "titulo" => "Eliminar Producto",
+            "subtitulo" => "Eliminar un Producto",
+            "activo" => "productos",
             "admon" => true,
             "menu" => true,
             "errores" => [],
             "pagina" => $pagina,
-            "tiposUsuarios" => $tiposUsuarios,
-            "estadosUsuarios" => $estadosUsuarios,
-            "generos" => $generos,
+            "proveedores" => $proveedores,
+            "categorias" => $categorias,
             "data" => $data,
             "baja" => true
         ];
 
         //llama método vista para mostrar el registro obtenido
-        $this->vista("usuariosAltaVista", $datos);
+        $this->vista("productosAltaVista", $datos);
     }
 
-    //modificar el país por su id
+    //modificar el producto por su id
     public function modificar($id, $pagina="1")
     {
         //obtener registro de la tabla por su id con el método getId() en modelo
@@ -382,6 +454,7 @@ class ProductosControlador extends Controlador
             "activo" => "productos",
             "admon" => true,
             "menu" => true,
+            "errores" => [],
             "pagina" => $pagina,
             "proveedores" => $proveedores,
             "categorias" => $categorias,
@@ -390,6 +463,46 @@ class ProductosControlador extends Controlador
 
         //llema método vista() enviando atributos
         $this->vista("productosAltaVista", $datos);
+    }
+
+    //obtiene la imagen y la envia a la vista para eliminar
+    public function modificarImagenes($id, $pagina="1")
+    {
+        //obtener registro de la tabla por su id con el método getId() en modelo
+        $data = $this->modelo->getId($id);
+
+        //define la url relativa, de la carpeta con las fotos del producto por su $id
+        $carpeta = "fotos/".$id."/";
+
+        //valida si existe la carpeta o directorio
+        if (file_exists($carpeta)) {
+            //obtine en un arreglo indexaso, los niveles de directorios relativos (desde la carpeta public),
+            //hasta la carpeta donde estan los archivos (fotos) de cada producto (. ..) (/fotos/01/) y
+            //los nombres de los archivos (fotos) de la carpeta, de cada producto.
+            //Cada nivel de directorio y cada archivo se almacena en un indice del arreglo indexado $archivos_array
+            //[0]=>"." [1]=>".." [2]=>"nom_foto1" [3]=>"nom_foto2" etc
+            $archivos_array = scandir($carpeta);
+            
+        //si NO existe la carpeta fotos/...
+        } else {
+            //asigna arreglo vacio al arreglo archivos_array
+            $archivos_array = [];
+        }
+
+        //arreglo con datos para enviar a la vista, una vez obtenida la $data de la BD
+        $datos = [
+            "titulo" => "Editar Foto",
+            "subtitulo" => "Editar foto del producto: ".$data['nombre'],
+            "activo" => "productos",
+            "admon" => true,
+            "menu" => true,
+            "pagina" => $pagina,
+            "archivos" => $archivos_array,
+            "data" => $data
+        ];
+
+        //llema método vista() enviando atributos
+        $this->vista("productosArchivosVista", $datos);
     }
 }
 ?>

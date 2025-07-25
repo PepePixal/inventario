@@ -69,7 +69,8 @@
                 print "<td class='text-left'>".$datos["data"][$i]['proveedor']."</td>";
 
                 print "<td class='text-left'>";
-                print "<img src='".$foto."' width='40'/>";
+                //img con enlace que envia por url, al método modificar, de PaisesControlador, con los parámetros "id" y "página"
+                print "<a href='".RUTA."ProductosControlador/modificarImagenes/".$datos["data"][$i]["id"]."/".$datos["pag"]["pagina"]."' ><img src='".$foto."' width='40'/></a>";
                 print "</td>";
 
                 //el enlace lo envia por url, al método modificar, de PaisesControlador, con los parámetros "id" y "página"

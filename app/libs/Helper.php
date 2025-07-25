@@ -101,13 +101,60 @@ class Helper
     }
 
     //limpia un número string, eliminando espacios, símbolos $, €, y . de millares
-    public static function numero($cadena) {
+    public static function numero($cadena) 
+    {
         //define los signos a buscar y con los que reemplazar
         $buscar = array(' ', '$', '€','.');
         $reemplazar = array('', '', '','');
         //reemplaza los carácteres de $buscar por los de $reemplazar, en la $cadena recibida
         $numero = str_replace($buscar, $reemplazar, $cadena);
         return $numero;
+    }
+
+    //convierte los bytes recibidos en TB o GB o MB o Kb
+    public static function medidaSize($bytes) 
+    {
+        //convierte el valor recibido en $bytes en decimal 
+        $bytes = floatval($bytes);
+        //crea arreglo indexado y en cada indice crea un array asoc con nombre de la unidad y su valor en bytes
+        $bytes_array = array(
+            0 => array(
+                "UNIT" => "TB",
+                //pow() exponencial
+                "VALUE" => pow(1024, 4)
+            ),
+            1 => array(
+                "UNIT" => "GB",
+                "VALUE" => pow(1024, 3)
+            ),
+            2 => array(
+                "UNIT" => "MB",
+                "VALUE" => pow(1024, 2)
+            ),
+            3 => array(
+                "UNIT" => "KB",
+                "VALUE" => 1024
+            ),
+            4 => array(
+                "UNIT" => "B",
+                "VALUE" => 1
+            )
+        );
+        //itera el array y por cada elemento $item
+        foreach ($bytes_array as $item) {
+           //si la cantidad de bytes recibida en $tytes, es >= que el valor de $item["VALUE"]
+           if ($bytes >= $item["VALUE"]) {
+                //calcula los bytes y los asigna a $salida
+                $salida = $bytes / $item["VALUE"];
+                //redondea a 2 decimales, lo convierte en string y lo concatena a su valor UNIT
+                $salida = strval(round($salida, 2))." ".$item["UNIT"];
+                //para el código y sale del foreach
+                break;
+           }
+        }
+        //ratorna el string con los bytes y la unidad correspondiente
+        return $salida;
+
     }
 
 }
