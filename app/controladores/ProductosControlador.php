@@ -340,7 +340,7 @@ class ProductosControlador extends Controlador
             //valida si existe el archivo foto
             if (file_exists($foto)){
                 //elimina el archivo (foto)
-                //unlink($foto)
+                unlink($foto);
                 $salida = true;
             }
         }
@@ -468,6 +468,50 @@ class ProductosControlador extends Controlador
     //obtiene la imagen y la envia a la vista para eliminar
     public function modificarImagenes($id, $pagina="1")
     {
+        $data = [];
+        $errores = [];
+
+        //si la pagina y la función ha sido accedido mediante una solicitud tipo POST
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            //obtiene el id y la página del POST
+            $id = $_POST['id'] ?? "";
+            $pagina = $_POST['pagina'] ?? "1";
+
+            //define carpeta fotos por producto
+            $carpeta = 'fotos/'.$id."/";
+            //define tipos de archivos permitidos
+            $tipos_array = ["image/jpg", "image/jpg", "image/gif", "image/png"];
+
+            //valida si NO existe, el directorio contenido en $carpeta:
+            if (!file_exists($carpeta)) {
+                //crea el directorio contenido en $carpeta, con permisos
+                mkdir($carpeta, 0777, true);
+            }
+
+            //obtiene datos del archivo (foto) subido, de la super glob $_FILES
+            $nombre = $_FILES['foto']['name'];
+            $nombre_tmp = $_FILES['foto']['tmp_name'];
+            $size = $_FILES['foto']['size'];
+            $tipo = $_FILES['foto']['type'];
+            //sanitiza el nombre del archivo, para el servidor
+            $nombre = Helper::archivo($nombre);
+
+            //validación del archivo subido
+            if ($size < 4*1024*1024) {
+                if (in_array($tipo, $tipos_array)) {
+                    if (is_uploaded_file($nombre_tmp)) {
+                        //copia el archivo en la carpeta con el nombre original
+                        copy($nombre_tmp, $carpeta.$nombre);
+                    }
+                } else {
+                    array_push($errores, "Tipo de archvio No permitido");
+                }
+            } else {
+                array_push($errores, "Archivo ".$nombre." demasiado grande. Max 4MB");
+            }
+        }
+
+
         //obtener registro de la tabla por su id con el método getId() en modelo
         $data = $this->modelo->getId($id);
 
@@ -498,6 +542,7 @@ class ProductosControlador extends Controlador
             "menu" => true,
             "pagina" => $pagina,
             "archivos" => $archivos_array,
+            "errores" => $errores,
             "data" => $data
         ];
 

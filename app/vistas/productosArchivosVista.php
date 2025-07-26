@@ -60,7 +60,23 @@
     <!-- carga paginación.php -->
     <?php include_once("paginacion.php"); ?>
 
-    <a href="<?php print RUTA;?>ProductosControlador/altaImagen/" class="btn btn-success mt-3 me-3 ">Subir una imagen</a>
+    <!-- Form para subir una nueva imagen via POST -->
+    <form action="<?php print RUTA;?>ProductosControlador/modificarImagenes/" method="POST" enctype="multipart/form-data">
+        <!-- Envia via POST el id del producto y la pagina, si existen y son diferentes a NULL -->
+        <input type="hidden" name="id" id="id" 
+        value="<?php if (isset($datos['data']['id'])) {print $datos['data']['id'];} else {print "";} ?>">
+        <input type="hidden" name="pagina" id="pagina" 
+        value="<?php if (isset($datos['pagina'])) {print $datos['pagina'];} else {print "1";} ?>">
+        <div class="form-group text-left">
+            <div class="form-group text-left">
+                <label for="fotos">Añadir foto:</label>
+                <input type="file" name="foto" id="foto" class="form-control">
+                <input type="submit" value="Subir foto" class="btn btn-success mt-3">
+            </div>
+        </div>
+    </form>
+
+    <!-- <a href="<?php print RUTA;?>ProductosControlador/altaImagen/" class="btn btn-success mt-3 me-3 ">Subir una imagen</a> -->
     <a href="<?php print RUTA.'ProductosControlador/'.$datos['pagina']; ?>" class="btn btn-secondary mt-3"><- Volver</a>
 
 </div>
